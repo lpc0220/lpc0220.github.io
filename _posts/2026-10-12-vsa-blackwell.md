@@ -122,4 +122,4 @@ The largest gains are at short sequences, where fixed per-launch and per-tile ov
 
 ## Acknowledgements
 
-Thanks to the FastVideo maintainers for reviewing and merging the kernels.
+This work was developed in close collaboration between the FastVideo team and Pengcheng Li at NVIDIA.
