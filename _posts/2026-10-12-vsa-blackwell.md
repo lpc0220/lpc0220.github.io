@@ -101,8 +101,6 @@ All kernel-level results use one setup:
 
 At a fixed sequence length and density, every block size does the same number of FLOPs, so the TFLOPS of different block sizes are directly comparable. Each kernel is compared with the strongest public kernel at the same block size.
 
-### 3.1 Kernel throughput
-
 The baselines are our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (our VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
 
 ![TFLOPS vs sequence length](/assets/images/vsa-blackwell/fwd-perf.svg)
@@ -118,13 +116,6 @@ The baselines are our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 1
 
 The largest gains are at short sequences, where fixed per-launch and per-tile overheads dominate the baselines.
 
-### 3.2 Speedup in FastVideo
+## Acknowledgements
 
-The 64- and 128-token kernels ship in FastVideo ([#1719](https://github.com/hao-ai-lab/FastVideo/pull/1719)). With `FASTVIDEO_VSA_SM100A=1`, FastVideo routes the VSA fine stage to these kernels when the inputs are supported (bf16, head dim 128, 64- or 128-token blocks). Unsupported inputs fall back to Triton. Measured through `block_sparse_attn_from_indices`, with 40 heads and Wan-sized sequence lengths:
-
-| Shape (padded S, blocks, top-k) | Triton | This work | Speedup |
-| --- | ---: | ---: | ---: |
-| 480P: 39,936, 624, 62 | 6.47 ms | 3.08 ms | 2.10× |
-| 720P: 92,160, 1,440, 144 | 33.36 ms | 16.26 ms | 2.05× |
-
-Both rows use 90% sparsity (top-k ≈ 10% of blocks).
+Thanks to the FastVideo maintainers for reviewing and merging the kernels.
