@@ -46,7 +46,7 @@ The TMEM layout and softmax are the same as for 128-token blocks. Our first 256-
 
 *Figure 4. 256-token blocks: the CTA's two M-tiles are the two halves of one query block, so every 128-key K/V tile is loaded once and read by both.*
 
-**512-token blocks: a 2-CTA pair shares one K/V stream.** A 1-CTA kernel puts at most 256 query rows behind each K/V gather, since four M-tiles would need 1,024 TMEM columns. Blackwell's `cta_group::2` MMA lets a pair of CTAs compute one 256-row tile together, so a 2-CTA cluster covers 512 rows. That pays only when all 512 rows share K/V, which depends on the block size (Figure 5):
+**512-token blocks: a 2-CTA pair shares one K/V stream.** In one CTA, a loaded K/V tile serves at most two M-tiles (256 query rows): each M-tile needs 256 of the 512 TMEM columns (128 for S, 128 for O). Blackwell's `cta_group::2` MMA lets two CTAs compute one 256-row tile together, each keeping its rows in its own TMEM and loading half of each K/V tile. A 2-CTA cluster therefore covers 512 query rows, and one K/V tile can serve all of them. That pays only when all 512 rows share K/V, which depends on the block size (Figure 5):
 
 - **128-token blocks:** each joint 256-row MMA spans two blocks with different lists, so it must visit the union of both lists. That is 2.7× more KV blocks at 25% density, and the 2-CTA kernel runs at 0.4–0.5× the 1-CTA one.
 - **256-token blocks:** each joint MMA is one block with one list, but the pair processes two blocks, so it streams two K/V sequences and loads the same bytes per CTA as 1-CTA. Result: 0.91–0.97× of 1-CTA.
