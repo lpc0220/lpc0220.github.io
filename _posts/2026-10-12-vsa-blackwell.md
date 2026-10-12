@@ -46,19 +46,19 @@ The TMEM layout and softmax are the same as for 128-token blocks. Our first 256-
 
 *Figure 4. 256-token blocks: the CTA's two M-tiles are the two halves of one query block, so every 128-key K/V tile is loaded once and read by both.*
 
-**512-token blocks: two CTAs share one K/V stream** (Figure 5).
+**512-token blocks: why we pair two CTAs here, and only here.** Blackwell's `cta_group::2` MMA lets two CTAs compute one 256-row tile together. We use it for 512-token blocks only. At 128 and 256 tokens we built 2-CTA kernels too, and they were slower than 1-CTA.
 
-- **Why one CTA stops at 256 rows.** A loaded K/V tile can be used only by rows whose accumulators are in the CTA's TMEM at that moment. Each 128-row M-tile keeps S (128 columns) and O (128 columns) there, and O stays for the whole K loop, so the 512 columns hold two M-tiles: 256 rows. With one CTA, 512-token blocks give no more reuse than 256-token blocks.
-- **Rows.** Blackwell's `cta_group::2` MMA lets two CTAs compute one 256-row tile together, each CTA keeping its 128 rows in its own TMEM. The pair runs two such joint MMAs, so it holds four M-tiles: one whole 512-token query block. CTA 0 holds rows 0–127 and 256–383; CTA 1 holds rows 128–255 and 384–511.
-- **Keys.** A step is still 128 keys, so a selected 512-token KV block takes four steps. In each step, CTA 0 loads keys 0–63 of the K tile and CTA 1 loads keys 64–127; V is split the same way along the head dimension. Each joint MMA reads both halves.
-- **Reuse.** All 512 rows share one list, so each K/V tile serves 512 rows while each CTA loads only half of it. That halves the K/V loads per row compared with the 1-CTA kernels: L2 read requests drop 1.95× at 32K tokens.
+**Why pair CTAs at all.** A loaded K/V tile can be used only by rows whose accumulators are in the CTA's TMEM at that moment. Each 128-row M-tile keeps S (128 columns) and O (128 columns) there, and O stays for the whole K loop, so one CTA's 512 columns hold two M-tiles: 256 rows. A pair of CTAs holds four M-tiles, 512 rows, and one K/V tile can feed all of them.
 
-This is our fastest forward kernel at 8K and 128K tokens. Elsewhere it is within 3% of the 1-CTA 256-token kernel: DRAM traffic doesn't change (3–4% of HBM bandwidth), so the requests it saves were L2 hits, and the kernel is compute-bound.
+**Why only 512-token blocks.** Pairing pays only if all 512 rows of the pair share one list, so that every K/V tile the pair loads is used by all of them. Only 512-token blocks give that (Figure 5):
 
-**A 2-CTA pair helps only when its 512 rows share one list.** With smaller blocks, the pair's rows span several lists (Figure 5):
+| Block size | The pair's 512 rows are | Lists | What the pair loads | 2-CTA vs 1-CTA | Use 2-CTA? |
+| --- | --- | ---: | --- | --- | --- |
+| 128 | 4 query blocks | 4 | each joint MMA covers two blocks, so it loads the union of their lists: 2.7× more KV blocks at 25% density | 0.4–0.5× | no |
+| 256 | 2 query blocks | 2 | two separate K/V streams; each CTA loads the same bytes as in 1-CTA | 0.91–0.97× | no |
+| 512 | 1 query block | 1 | one K/V stream; each CTA loads half of every tile | fastest at 8K and 128K, within 3% elsewhere | yes |
 
-- **128-token blocks:** each joint 256-row MMA covers two query blocks with different lists, so it must visit the union of both lists: 2.7× more KV blocks at 25% density. The 2-CTA kernel runs at 0.4–0.5× of 1-CTA.
-- **256-token blocks:** each joint MMA is one block with one list, but the pair's two joint MMAs are two blocks with two lists. It runs two K/V streams, and each CTA loads as many bytes as in 1-CTA: 0.91–0.97× of 1-CTA.
+**How the 512-token kernel splits the work.** CTA 0 holds rows 0–127 and 256–383 of the query block, and CTA 1 holds rows 128–255 and 384–511. A step is still 128 keys, so a selected 512-token KV block takes four steps. In each step, CTA 0 loads keys 0–63 of the K tile and CTA 1 loads keys 64–127; V is split the same way along the head dimension. Each joint MMA reads both halves, so K/V loads per row halve: L2 read requests drop 1.95× at 32K tokens. The speedup is small because DRAM traffic doesn't change (3–4% of HBM bandwidth): the saved requests were L2 hits, and the kernel is compute-bound.
 
 ![2-CTA geometry for 128-, 256- and 512-token blocks](/assets/images/vsa-blackwell/fwd-2cta.svg)
 
