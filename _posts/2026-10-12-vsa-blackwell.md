@@ -8,7 +8,7 @@ description: "Blackwell (sm_100a) CUDA kernels for the fine stage of Video Spars
 
 ## 1. Background: the VSA fine stage
 
-Our [VSA paper](https://arxiv.org/abs/2505.13389) replaces full attention in video diffusion transformers with two stages. A coarse stage attends over mean-pooled token blocks and keeps the top-k KV blocks for each query block. A fine stage then computes exact attention, but only over the selected blocks (Figure 1). The fine stage dominates the cost, and it is the part these kernels implement.
+Our [VSA](https://arxiv.org/abs/2505.13389) replaces full attention in video diffusion transformers with two stages. A coarse stage attends over mean-pooled token blocks and keeps the top-k KV blocks for each query block. A fine stage then computes exact attention, but only over the selected blocks (Figure 1). The fine stage dominates the cost, and it is the part these kernels implement.
 
 ![VSA fine stage as a block-sparse mask](/assets/images/vsa-blackwell/vsa-fine-stage.svg)
 
@@ -16,15 +16,13 @@ Our [VSA paper](https://arxiv.org/abs/2505.13389) replaces full attention in vid
 
 The problem differs from dense attention in two ways. Every query block has its **own** KV list, so K/V must be gathered rather than streamed. And the block size is set by the model (our default is a 4×4×4 = 64-token video cube), and 64 rows is half the height of a Blackwell tensor-core tile.
 
-## 2. Kernel design
+## 2. Design
 
 ### 2.1 Starting point: dense attention
 
 The kernel is our dense Blackwell attention kernel with only the sparse parts changed. Each CTA runs 16 specialized warps: a TMA load warp, a `tcgen05` MMA warp, eight softmax warps, four correction warps, an epilogue warp, and a scheduler warp that steals work with cluster launch control (CLC). Each CTA processes two 128-row M-tiles whose S and O accumulators fill the 512 tensor-memory (TMEM) columns.
 
 **Ping-pong between the two M-tiles.** Each step of the K loop has two phases that run on different hardware. The MMAs (S = Q·Kᵀ and O += P·V) run on the tensor cores. The softmax (row max, exp2, row sum, and writing P) runs on the SM's general-purpose and special-function units. With one M-tile, each phase would wait for the other, and the tensor cores would sit idle during every softmax. With two, the MMA warp alternates: it issues tile 0's P·V and next Q·Kᵀ while the softmax warps work on tile 1's scores, then switches. Each unit is always busy with one of the tiles.
-
-**Eight softmax warps, four per M-tile.** A warp can access only the 32 TMEM lanes that match its position in its warpgroup (warp ID mod 4). Covering a tile's 128 lanes therefore takes four warps, one thread per lane, which is one thread per query row. Each thread loads its row's 128 scores into registers and computes the row max, exp2 and row sum on its own, with no communication between threads. It then writes P back over S in TMEM. A separate group of four warps per tile lets both tiles' softmax run at the same time, so neither tile waits for the other's. The four correction warps rescale O when a row's running max grows and normalize it at the end, which keeps that work off the softmax's path.
 
 Sparsity changes two things: the load warp gathers each selected KV block by its index instead of streaming a contiguous range, and the K loop visits only the selected blocks.
 
@@ -40,7 +38,7 @@ The one structural difference is K/V reuse. Dense attention loads each K/V tile 
 
 ### 2.3 64-token blocks: two query blocks per CTA, four KV blocks per step
 
-A 64-row query block fills only half of a 128-row MMA. Each CTA again takes two adjacent query blocks, each with its own list, and interleaves their K/V in one ring. TMEM is 128 lanes (rows) × 512 columns, and each query block gets 128 columns for its scores. Each step of the K loop gathers four selected KV blocks (256 keys), so the scores form a 64 × 256 tile, twice as wide as the 128 columns available. `tcgen05.mma.ws` (PTX data-path Layout E) stores it in two halves: scores for keys 0–127 go to lanes 0–63, and scores for keys 128–255 go to lanes 64–127 (Figure 3). Every lane is used, and each query row appears once in each half. Each softmax thread runs an online softmax over one half (128 keys), and the correction warps merge the two halves of each row.
+128-row by 128-kv tokens utilizes full capability of tensor-core MMA. A 64-row query block fills only half of a 128-row MMA. Each CTA again takes two adjacent query blocks, each with its own list, and interleaves their K/V in one ring. TMEM is 128 lanes (rows) × 512 columns, and each query block gets 128 columns for its scores. Each step of the K loop gathers four selected KV blocks (256 keys), so the scores form a 64 × 256 tile, twice as wide as the 128 columns available. `tcgen05.mma.ws` (PTX data-path Layout E) stores it in two halves: scores for keys 0–127 go to lanes 0–63, and scores for keys 128–255 go to lanes 64–127 (Figure 3). Every lane is used, and each query row appears once in each half. Each softmax thread runs an online softmax over one half (128 keys), and the correction warps merge the two halves of each row.
 
 ![Dual-packed S in TMEM for 64-token blocks](/assets/images/vsa-blackwell/fwd-dualpack.svg)
 
