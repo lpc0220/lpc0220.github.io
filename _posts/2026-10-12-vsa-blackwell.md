@@ -94,7 +94,7 @@ It is 5–18% faster than one-pass up to 128K tokens. At 256K the two are equal,
 
 **Small and launch-bound cases.** PDL removes a constant 4–10 µs per call, worth 5–8% at 4K tokens and nothing measurable from 32K up. At 256-token blocks, a 2-CTA pair covers one KV block with joint 256-row MMAs, and each CTA loads only its half of every Q and dO tile. Unlike in the forward pass, this pays here: +6% at 4K and +13% at 512K over 1-CTA.
 
-## 4. Experiments
+## 4. Results
 
 All kernel-level results use one setup:
 
