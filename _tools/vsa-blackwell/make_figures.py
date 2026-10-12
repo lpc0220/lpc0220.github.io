@@ -221,7 +221,7 @@ def fwd_diagram(path):
     w, h = 1040, 380
     o = svg_open(w, h)
     o.append(text(30, 36, "1 · Two query blocks per CTA", 13, INK, weight=600))
-    o.append(text(260, 36, "2 · One K-tile = 4 KV blocks", 13, INK, weight=600))
+    o.append(text(260, 36, "2 · One step = 4 KV blocks", 13, INK, weight=600))
     o.append(text(520, 36, "3 · TMEM: 128 lanes × 512 columns", 13, INK, weight=600))
 
     for i, (name, lst, fill) in enumerate([("q block 2p", "list A", BLUE_L),
@@ -235,11 +235,11 @@ def fwd_diagram(path):
         fill = AQUA_L if j < 2 else VIOLET_L
         o.append(box(260, y, 200, 42, fill))
         o.append(text(360, y + 26, f"KV block {j} from list A", 12, INK, "middle"))
-    o.append(text(260, 290, "blocks 0–1 = keys 0–127 → kv-half 0", 11, INK_2))
-    o.append(text(260, 306, "blocks 2–3 = keys 128–255 → kv-half 1", 11, INK_2))
+    o.append(text(260, 290, "blocks 0–1 = keys 0–127 → lanes 0–63", 11, INK_2))
+    o.append(text(260, 306, "blocks 2–3 = keys 128–255 → lanes 64–127", 11, INK_2))
     o.append(arrow(210, 107, 258, 107))
     o.append(arrow(210, 223, 258, 223, dash=True))
-    o.append(text(30, 290, "List B's K-tiles are gathered", 11, INK_3))
+    o.append(text(30, 290, "List B's KV blocks are gathered", 11, INK_3))
     o.append(text(30, 306, "into the same SMEM ring.", 11, INK_3))
 
     cols = [("S of 2p", BLUE_L), ("O of 2p", BLUE_L), ("S of 2p+1", ORANGE_L), ("O of 2p+1", ORANGE_L)]
@@ -250,16 +250,16 @@ def fwd_diagram(path):
         o.append(f'<line x1="{x}" y1="166" x2="{x + cw}" y2="166" stroke="{INK_3}" '
                  f'stroke-width="1" stroke-dasharray="4 3"/>')
         o.append(text(x + cw / 2, 108, "lanes 0–63", 11, INK_2, "middle"))
-        o.append(text(x + cw / 2, 125, "kv-half 0", 11.5, INK, "middle", 600))
+        o.append(text(x + cw / 2, 125, "keys 0–127", 11.5, INK, "middle", 600))
         o.append(text(x + cw / 2, 212, "lanes 64–127", 11, INK_2, "middle"))
-        o.append(text(x + cw / 2, 229, "kv-half 1", 11.5, INK, "middle", 600))
+        o.append(text(x + cw / 2, 229, "keys 128–255", 11.5, INK, "middle", 600))
         o.append(text(x + cw / 2, 290, lab, 11.5, INK_2, "middle"))
         o.append(text(x + cw / 2, 306, "128 cols", 11, INK_3, "middle"))
     o.append(arrow(460, 108, 518, 108))
     o.append(arrow(460, 212, 518, 212))
-    o.append(text(30, 344, "tcgen05.mma.ws writes each 128-key half to its own 64 lanes, so all 128 TMEM lanes carry data within the 512-column budget.",
+    o.append(text(30, 344, "The 64 × 256 score tile is stored in two halves (tcgen05.mma.ws, Layout E): keys 0–127 in lanes 0–63, keys 128–255 in lanes 64–127.",
                   12, INK_2))
-    o.append(text(30, 364, "Each softmax thread runs an online softmax over one half; the correction warps merge the two partial results per row.",
+    o.append(text(30, 364, "Each softmax thread covers one row of one half; the correction warps merge the two halves of each row.",
                   12, INK_2))
     save(path, o)
 
