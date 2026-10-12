@@ -1,0 +1,133 @@
+---
+layout: post
+title: "Block-Sparse Attention for Video Diffusion on Blackwell: VSA Forward and Backward Kernels"
+author: Pengcheng Li
+date: 2026-10-12
+description: "Blackwell (sm_100a) CUDA kernels for the fine stage of Video Sparse Attention: design and measured performance of the forward and backward passes."
+---
+
+## TL;DR
+
+- We wrote native Blackwell (sm_100a) CUDA kernels for the fine stage of Video Sparse Attention (VSA): a forward pass and a backward pass, at block sizes of 64, 128, 256 and 512 tokens. The 64- and 128-token kernels are upstream in FastVideo ([#1719](https://github.com/hao-ai-lab/FastVideo/pull/1719), [#1819](https://github.com/hao-ai-lab/FastVideo/pull/1819), [#1866](https://github.com/hao-ai-lab/FastVideo/pull/1866)); all of them are in [strata-masonry](https://github.com/TokenFlowLab/strata-masonry).
+- **Forward:** 1.9–3.3× FastVideo's Triton kernel at 64-token blocks, and ahead of FlashInfer (128-token blocks) and FA4 (256-token blocks) at every sequence length we measured.
+- **Backward:** 1.7–2.4× the Triton backward at 64-token blocks. Against FA4: ahead up to 32K tokens (1.06–2.25× at 128-token blocks, 1.07–3.7× at 256), and at parity beyond (0.97–1.03×).
+- **In FastVideo**, on Wan 480P/720P-sized inputs: forward 2.1×, backward 1.7× over Triton.
+- Three findings carried most of the work: block size matters more than any tuning knob, 2-CTA MMA helps only when the two CTAs share K/V, and in the backward pass the dQ reduction, not the math, is the bottleneck.
+
+## 1. What the kernels compute
+
+[VSA](https://arxiv.org/abs/2505.13389) (Zhang et al., 2025) replaces full attention in video diffusion transformers with two stages. A coarse stage attends over mean-pooled token blocks and keeps the top-k KV blocks for each query block. A fine stage then computes exact attention, but only over the selected blocks (Figure 1). The fine stage dominates the cost, and it is the part these kernels implement.
+
+![VSA fine stage as a block-sparse mask](/assets/images/vsa-blackwell/vsa-fine-stage.svg)
+
+*Figure 1. The fine stage is block-sparse attention: each query block attends to its own top-k KV blocks.*
+
+The problem differs from dense attention in three ways. Every query block has its **own** KV list, so K/V must be gathered rather than streamed. The block size is set by the model (FastVideo's default is a 4×4×4 = 64-token video cube), and 64 rows is half the height of a Blackwell tensor-core tile. And the backward pass has to route gradients through that irregular pattern.
+
+All results below use one setup unless noted:
+
+| Component | Setup |
+| --- | --- |
+| GPU | NVIDIA GB200 (sm_100a), CUDA 13.0 |
+| Shape | B=1, H=8, head dim 128, bf16, non-causal MHA |
+| Sparsity | 25% density (top-k = number of blocks / 4), random block selection shared across heads |
+| Inputs | identical saved tensors for every implementation |
+| Metric | TFLOPS over selected block pairs: 4·D·H·blocks·top-k·block² per forward, 2.5× that per backward |
+
+At a fixed sequence length and density, every block size does the same number of FLOPs, so the TFLOPS of different block sizes are directly comparable.
+
+## 2. Forward kernel
+
+**Start from dense attention.** The forward kernel is our dense Blackwell attention kernel, which follows the FlashAttention-4 forward design, with only the sparse parts changed. Each CTA runs 16 specialized warps: a TMA load warp, a `tcgen05` MMA warp, eight softmax warps, four correction warps, an epilogue warp, and a scheduler warp that steals work with cluster launch control (CLC). Each CTA processes two 128-row M-tiles whose S and O accumulators fill the 512 tensor-memory (TMEM) columns. Sparsity changes two things: the load warp gathers each selected KV block by its index instead of streaming a contiguous range, and the K loop visits only the selected blocks.
+
+**64-token blocks: two query blocks per CTA, two KV halves per tile.** A 64-row query block fills only half of a 128-row MMA. So each CTA takes two adjacent query blocks, each with its own list, and interleaves their K/V tiles in one shared-memory ring. Inside one query block, a K-tile gathers four 64-token KV blocks (256 keys), but each M-tile has only 128 TMEM columns for S. We use `tcgen05.mma.ws` to write the two 128-key halves into separate 64-lane halves of TMEM (Figure 2). Every TMEM lane then holds data, the 512-column budget still fits, and each softmax thread runs an independent online softmax over one half; the correction warps merge the two halves per row.
+
+![Dual-packed S in TMEM for 64-token blocks](/assets/images/vsa-blackwell/fwd-dualpack.svg)
+
+*Figure 2. 64-token blocks: two query blocks per CTA, each K-tile's two 128-key halves stacked in TMEM lanes.*
+
+**Block size matters more than tuning.** Across our own kernels, going from 64- to 256-token blocks raises throughput by 44% at 4K tokens and 32% at 64K: fewer index lookups, and longer contiguous gathers. At 128 tokens the kernel uses plain 128-row MMAs, the same tiling as dense attention. At 256 tokens, the CTA's two M-tiles are the two halves of **one** sparse block with one list, so each K/V tile is gathered once and feeds both MMAs. Before that change the 256-token kernel gathered every K/V tile twice and trailed FA4 at 128K tokens (0.94×). After it, it leads at every length.
+
+**2-CTA MMA pays only when the two CTAs share K/V.** Blackwell's `cta_group::2` MMA lets a pair of CTAs compute one 256-row tile together. In dense attention every row reads the same K/V, so the pair halves its K/V traffic. Here, rows share K/V only within a sparse block (Figure 3):
+
+- **128-token blocks:** each joint 256-row MMA spans two blocks with different lists, so it must visit the union of both lists. That is 2.7× more KV blocks at 25% density, and the 2-CTA kernel runs at 0.4–0.5× the 1-CTA one.
+- **256-token blocks:** each joint MMA is one block with one list, but the pair processes two blocks, so it streams two K/V sequences and loads the same bytes per CTA as 1-CTA. Result: 0.91–0.97× of 1-CTA.
+- **512-token blocks:** the whole cluster is one block, so one K/V stream feeds 512 rows and L2 read requests halve (1.95× fewer at 32K tokens). It is our fastest forward kernel at 8K and 128K tokens. Elsewhere it is within 3% of the 1-CTA 256-token kernel, because DRAM traffic doesn't change (3–4% of HBM bandwidth): the kernel is compute-bound.
+
+![2-CTA geometry for 128-, 256- and 512-token blocks](/assets/images/vsa-blackwell/fwd-2cta.svg)
+
+*Figure 3. A 2-CTA cluster covers 512 query rows. Colors mark distinct top-k lists.*
+
+**FastVideo's extensions cost nothing measurable.** The upstream kernel also supports per-block valid lengths (padded video edges), returns the log-sum-exp for the backward pass, and reads V in its natural layout. A full-block check skips the key mask whenever a block is complete. With all three added, throughput moved by +0.7% (64-token blocks) and −0.4% (128-token blocks), within run-to-run noise.
+
+**Forward results.** Figure 4 compares each kernel with the strongest public kernel at the same block size: FastVideo's Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (FastVideo's VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
+
+![Forward TFLOPS vs sequence length](/assets/images/vsa-blackwell/fwd-perf.svg)
+
+*Figure 4. Forward throughput on GB200.*
+
+| Block | Baseline | 4K | 8K | 16K | 32K | 64K | 128K |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 64 | Triton | 3.34× | 2.74× | 2.34× | 2.25× | 2.14× | 1.92× |
+| 64 | FlashInfer | 8.78× | 4.65× | 2.67× | 1.76× | 1.32× | 1.14× |
+| 128 | FlashInfer | 4.21× | 2.09× | 1.26× | 1.18× | 1.13× | 1.09× |
+| 256 | FA4 | 4.13× | 2.17× | 1.33× | 1.16× | 1.07× | 1.04× |
+
+The largest gains are at short sequences, where fixed per-launch and per-tile overheads dominate the baselines.
+
+## 3. Backward kernel
+
+**Structure.** The backward pass runs three kernels, chained with programmatic dependent launch (PDL) so that each kernel's launch and prologue overlap the previous kernel's tail (Figure 5). The main kernel is KV-stationary: one CTA owns one KV block, loads K and V once, and walks the list of query blocks that selected it (FastVideo's inverted index). It accumulates dK and dV in TMEM and sends each dQ partial to an fp32 global accumulator with a TMA reduce-add. The tiles, warp roles and TMEM map follow the FA4 sm100 backward, and we deviate only where sparsity forces it.
+
+![Backward pipeline](/assets/images/vsa-blackwell/bwd-pipeline.svg)
+
+*Figure 5. Backward pipeline: preprocess, KV-stationary main kernel, postprocess.*
+
+**dQ is the bottleneck.** dK and dV stay on chip, but a query block's dQ is a sum over its top-k KV blocks, which live in different CTAs. That sum goes through L2 as fp32 read-modify-write traffic. The traffic grows with S²·density, the same as the FLOPs. At 64-token blocks it caps the one-pass kernel at about 750 TFLOPS no matter how fast the math is. Instead of lowering the accumulator's precision, the 64-token backward has a **two-pass** variant:
+
+- **Pass 1** computes dK and dV and stores each 64×64 dS tile (8 KB, bf16).
+- **Pass 2** gathers the stored tiles per query block and computes dQ with no read-modify-write at all.
+
+It is 5–18% faster than one-pass up to 128K tokens. At 256K the two are equal, and at 512K two-pass is 15% slower, so we dispatch to one-pass from 256K tokens.
+
+**One copy of Q and dO in shared memory.** The backward pass reads Q in two GEMMs that contract over different dimensions (Sᵀ = K·Qᵀ over the head dimension, dK = dSᵀ·Q over tokens), and dO likewise. Loading both layouts made the load warp the bottleneck. We keep a single transposed copy and let the first GEMM read it through the instruction descriptor's transpose bit, which measured 4–31% faster than loading both layouts.
+
+**Small and launch-bound cases.** PDL removes a constant 4–10 µs per call, worth 5–8% at 4K tokens and nothing measurable from 32K up. At 256-token blocks, a 2-CTA pair covers one KV block with joint 256-row MMAs, and each CTA loads only its half of every Q and dO tile. Unlike in the forward pass, this pays here: +6% at 4K and +13% at 512K over 1-CTA.
+
+**Backward results.** Figure 6 compares each kernel with the strongest public baseline at the same block size: FastVideo's Triton backward at 64 tokens, and FA4's sm100 backward at 128 and 256 tokens (its best configuration per size). Ours were measured in one session; the baselines in separate sessions on the same node and inputs, with ±3% session-to-session spread.
+
+![Backward TFLOPS vs sequence length](/assets/images/vsa-blackwell/bwd-perf.svg)
+
+*Figure 6. Backward throughput on GB200, including preprocess and postprocess.*
+
+| Block | Baseline | 4K | 8K | 16K | 32K | 64K | 128K | 256K | 512K |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 64 | Triton | 2.35× | 2.20× | 2.21× | 2.12× | 1.91× | 1.81× | 1.70× | 1.73× |
+| 128 | FA4 | 2.25× | 1.47× | 1.13× | 1.06× | 1.02× | 1.03× | 1.03× | 1.03× |
+| 256 | FA4 | 3.72× | 1.89× | 1.28× | 1.07× | 1.00× | 0.97× | 0.98× | 0.98× |
+
+From 64K tokens on, the 128- and 256-token results are within the ±3% session spread of FA4: parity, not a win. Every implementation slows down past 32K tokens. For ours, profiling at 128K points to latency in the dQ reduction stream (54% L2 hit rate) rather than DRAM bandwidth (40% utilized).
+
+## 4. In FastVideo
+
+With `FASTVIDEO_VSA_SM100A=1`, FastVideo routes the VSA fine stage to these kernels when the inputs are supported (bf16, head dim 128, 64- or 128-token blocks). Unsupported inputs fall back to Triton. Measured through `block_sparse_attn_from_indices` and `torch.autograd.grad`, with 40 heads and Wan-sized sequence lengths:
+
+| Pass | Shape (padded S, blocks, top-k) | Triton | This work | Speedup |
+| --- | --- | ---: | ---: | ---: |
+| Forward | 480P: 39,936, 624, 62 | 6.47 ms | 3.08 ms | 2.10× |
+| Forward | 720P: 92,160, 1,440, 144 | 33.36 ms | 16.26 ms | 2.05× |
+| Backward | 480P-like: 39,936, 624, 156 | 47.20 ms | 27.66 ms | 1.71× |
+| Backward | 720P-like: 92,160, 1,440, 360 | 247.66 ms | 149.24 ms | 1.66× |
+
+The forward rows use 90% sparsity (top-k ≈ 10% of blocks); the backward rows use 25% density and include FastVideo's index inversion in both columns. Both backwards are validated against an fp32 reference; at 128-token blocks the CUDA and Triton gradients agree to a relative error of at most 2×10⁻².
+
+## 5. Limitations and next steps
+
+- All numbers are from GB200. The kernels also build for GB300 (sm_103a, [#1833](https://github.com/hao-ai-lab/FastVideo/pull/1833)), but most of the tuning was done on GB200.
+- FastVideo routes only the 64- and 128-token kernels. The 256- and 512-token kernels live in strata-masonry; FastVideo's 256-token path uses FA4.
+- Past 32K tokens the backward is limited by the fp32 dQ reduction stream. A work order that keeps each query block's partials L2-resident is the next step.
+- Vera Rubin (sm_107a) support is planned.
+
+## Acknowledgements
+
+Thanks to the FastVideo maintainers for reviewing and merging the kernels, and to the FlashAttention-4 authors, whose design both kernels follow.

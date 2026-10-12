@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1038" height="372" viewBox="0 0 1038 372" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<rect width="1038" height="372" fill="#fcfcfb"/>
+<line x1="58" y1="22" x2="80" y2="22" stroke="#2a78d6" stroke-width="2.5"/>
+<circle cx="69" cy="22" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="86.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >This work</text>
+<line x1="184" y1="22" x2="206" y2="22" stroke="#eb6834" stroke-width="2.5"/>
+<circle cx="195" cy="22" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<text x="212.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >FastVideo Triton</text>
+<line x1="366" y1="22" x2="388" y2="22" stroke="#1baf7a" stroke-width="2.5"/>
+<circle cx="377" cy="22" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<text x="394.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >FlashInfer</text>
+<line x1="500" y1="22" x2="522" y2="22" stroke="#eda100" stroke-width="2.5"/>
+<circle cx="511" cy="22" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"/>
+<text x="528.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >FA4</text>
+<text x="1026.0" y="26.0" font-size="12" fill="#8a8984" text-anchor="end" font-weight="400" >Forward · GB200 · H=8, D=128, 25% density</text>
+<text x="58.0" y="52.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >64-token blocks</text>
+<line x1="58" y1="314.0" x2="284" y2="314.0" stroke="#d6d5d0" stroke-width="1"/>
+<text x="50.0" y="318.0" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >0</text>
+<line x1="58" y1="251.5" x2="284" y2="251.5" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="255.5" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >400</text>
+<line x1="58" y1="189.0" x2="284" y2="189.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="193.0" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >800</text>
+<line x1="58" y1="126.5" x2="284" y2="126.5" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="130.5" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >1,200</text>
+<line x1="58" y1="64.0" x2="284" y2="64.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="68.0" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >1,600</text>
+<text x="66.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >4K</text>
+<text x="108.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8K</text>
+<text x="150.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >16K</text>
+<text x="192.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >32K</text>
+<text x="234.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >64K</text>
+<text x="276.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >128K</text>
+<polyline points="66.0,229.2 108.0,184.4 150.0,155.1 192.0,143.5 234.0,141.8 276.0,157.3" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="66.0" cy="229.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=4K: 543 TFLOPS</title></circle>
+<circle cx="108.0" cy="184.4" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=8K: 829 TFLOPS</title></circle>
+<circle cx="150.0" cy="155.1" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=16K: 1,017 TFLOPS</title></circle>
+<circle cx="192.0" cy="143.5" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=32K: 1,091 TFLOPS</title></circle>
+<circle cx="234.0" cy="141.8" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=64K: 1,102 TFLOPS</title></circle>
+<circle cx="276.0" cy="157.3" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=128K: 1,003 TFLOPS</title></circle>
+<polyline points="66.0,288.6 108.0,266.7 150.0,246.1 192.0,238.3 234.0,233.4 276.0,232.5" fill="none" stroke="#eb6834" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="66.0" cy="288.6" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=4K: 163 TFLOPS</title></circle>
+<circle cx="108.0" cy="266.7" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=8K: 303 TFLOPS</title></circle>
+<circle cx="150.0" cy="246.1" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=16K: 434 TFLOPS</title></circle>
+<circle cx="192.0" cy="238.3" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=32K: 485 TFLOPS</title></circle>
+<circle cx="234.0" cy="233.4" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=64K: 516 TFLOPS</title></circle>
+<circle cx="276.0" cy="232.5" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=128K: 522 TFLOPS</title></circle>
+<polyline points="66.0,304.3 108.0,286.2 150.0,254.4 192.0,217.3 234.0,184.0 276.0,176.2" fill="none" stroke="#1baf7a" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="66.0" cy="304.3" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=4K: 62 TFLOPS</title></circle>
+<circle cx="108.0" cy="286.2" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=8K: 178 TFLOPS</title></circle>
+<circle cx="150.0" cy="254.4" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=16K: 381 TFLOPS</title></circle>
+<circle cx="192.0" cy="217.3" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=32K: 619 TFLOPS</title></circle>
+<circle cx="234.0" cy="184.0" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=64K: 832 TFLOPS</title></circle>
+<circle cx="276.0" cy="176.2" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=128K: 882 TFLOPS</title></circle>
+<text x="286.0" y="156.3" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >This work</text>
+<text x="286.0" y="169.3" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,003</text>
+<text x="286.0" y="231.5" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >Triton</text>
+<text x="286.0" y="244.5" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >522</text>
+<text x="286.0" y="182.3" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >FlashInfer</text>
+<text x="286.0" y="195.3" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >882</text>
+<text x="392.0" y="52.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >128-token blocks</text>
+<line x1="392" y1="314.0" x2="618" y2="314.0" stroke="#d6d5d0" stroke-width="1"/>
+<line x1="392" y1="251.5" x2="618" y2="251.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="392" y1="189.0" x2="618" y2="189.0" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="392" y1="126.5" x2="618" y2="126.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="392" y1="64.0" x2="618" y2="64.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="400.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >4K</text>
+<text x="442.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8K</text>
+<text x="484.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >16K</text>
+<text x="526.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >32K</text>
+<text x="568.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >64K</text>
+<text x="610.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >128K</text>
+<polyline points="400.0,183.9 442.0,146.4 484.0,128.9 526.0,93.7 568.0,92.9 610.0,112.1" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="400.0" cy="183.9" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=4K: 833 TFLOPS</title></circle>
+<circle cx="442.0" cy="146.4" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=8K: 1,073 TFLOPS</title></circle>
+<circle cx="484.0" cy="128.9" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=16K: 1,185 TFLOPS</title></circle>
+<circle cx="526.0" cy="93.7" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=32K: 1,410 TFLOPS</title></circle>
+<circle cx="568.0" cy="92.9" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=64K: 1,415 TFLOPS</title></circle>
+<circle cx="610.0" cy="112.1" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=128K: 1,292 TFLOPS</title></circle>
+<polyline points="400.0,283.1 442.0,233.6 484.0,166.5 526.0,127.8 568.0,118.3 610.0,128.0" fill="none" stroke="#1baf7a" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="400.0" cy="283.1" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=4K: 198 TFLOPS</title></circle>
+<circle cx="442.0" cy="233.6" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=8K: 514 TFLOPS</title></circle>
+<circle cx="484.0" cy="166.5" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=16K: 944 TFLOPS</title></circle>
+<circle cx="526.0" cy="127.8" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=32K: 1,192 TFLOPS</title></circle>
+<circle cx="568.0" cy="118.3" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=64K: 1,252 TFLOPS</title></circle>
+<circle cx="610.0" cy="128.0" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"><title>FlashInfer @ S=128K: 1,190 TFLOPS</title></circle>
+<text x="620.0" y="111.1" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >This work</text>
+<text x="620.0" y="124.1" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,292</text>
+<text x="620.0" y="137.1" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >FlashInfer</text>
+<text x="620.0" y="150.1" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,190</text>
+<text x="726.0" y="52.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >256-token blocks</text>
+<line x1="726" y1="314.0" x2="952" y2="314.0" stroke="#d6d5d0" stroke-width="1"/>
+<line x1="726" y1="251.5" x2="952" y2="251.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="726" y1="189.0" x2="952" y2="189.0" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="726" y1="126.5" x2="952" y2="126.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="726" y1="64.0" x2="952" y2="64.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="734.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >4K</text>
+<text x="776.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8K</text>
+<text x="818.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >16K</text>
+<text x="860.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >32K</text>
+<text x="902.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >64K</text>
+<text x="944.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >128K</text>
+<polyline points="734.0,178.5 776.0,124.2 818.0,112.3 860.0,72.1 902.0,75.2 944.0,89.3" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="734.0" cy="178.5" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=4K: 867 TFLOPS</title></circle>
+<circle cx="776.0" cy="124.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=8K: 1,215 TFLOPS</title></circle>
+<circle cx="818.0" cy="112.3" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=16K: 1,291 TFLOPS</title></circle>
+<circle cx="860.0" cy="72.1" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=32K: 1,548 TFLOPS</title></circle>
+<circle cx="902.0" cy="75.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=64K: 1,528 TFLOPS</title></circle>
+<circle cx="944.0" cy="89.3" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=128K: 1,438 TFLOPS</title></circle>
+<polyline points="734.0,281.2 776.0,226.3 818.0,162.1 860.0,105.7 902.0,89.9 944.0,97.3" fill="none" stroke="#eda100" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="734.0" cy="281.2" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=4K: 210 TFLOPS</title></circle>
+<circle cx="776.0" cy="226.3" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=8K: 561 TFLOPS</title></circle>
+<circle cx="818.0" cy="162.1" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=16K: 972 TFLOPS</title></circle>
+<circle cx="860.0" cy="105.7" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=32K: 1,333 TFLOPS</title></circle>
+<circle cx="902.0" cy="89.9" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=64K: 1,434 TFLOPS</title></circle>
+<circle cx="944.0" cy="97.3" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=128K: 1,387 TFLOPS</title></circle>
+<text x="954.0" y="88.3" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >This work</text>
+<text x="954.0" y="101.3" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,438</text>
+<text x="954.0" y="114.3" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >FA4</text>
+<text x="954.0" y="127.3" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,387</text>
+<text x="14.0" y="189.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" transform="rotate(-90 14 189.0)">TFLOPS</text>
+<text x="528.0" y="360.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="400" >Sequence length S (tokens)</text>
+</svg>

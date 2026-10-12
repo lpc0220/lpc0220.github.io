@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="340" viewBox="0 0 1040 340" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="340" fill="#fcfcfb"/>
+<rect x="30" y="40" width="210" height="150" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="135.0" y="64.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Preprocess</text>
+<text x="135.0" y="92.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >Δ = rowsum(dO ∘ O)</text>
+<text x="135.0" y="112.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >zero the fp32 dQ accumulator</text>
+<text x="135.0" y="132.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >zero dK, dV of unselected</text>
+<text x="135.0" y="152.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >KV blocks; work order</text>
+<rect x="300" y="40" width="440" height="236" rx="6" fill="#dbe8f9" stroke="#2a78d6" stroke-width="1.2"/>
+<text x="520.0" y="64.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Main: one CTA per KV block (KV-stationary)</text>
+<text x="520.0" y="86.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >K, V loaded once; loop over the query blocks that selected it</text>
+<rect x="320" y="104" width="400" height="32" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="332.0" y="125.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400" xml:space="preserve">Sᵀ = K Qᵀ  →  Pᵀ = exp2(scale · Sᵀ − LSE)</text>
+<rect x="320" y="144" width="400" height="32" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="332.0" y="165.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400" xml:space="preserve">dPᵀ = V dOᵀ  →  dSᵀ = Pᵀ ∘ (dPᵀ − Δ)</text>
+<rect x="320" y="184" width="400" height="32" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="332.0" y="205.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400" xml:space="preserve">dV += Pᵀ dO;  dK += dSᵀ Q   (accumulated in TMEM)</text>
+<rect x="320" y="224" width="400" height="32" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="332.0" y="245.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400" xml:space="preserve">dQ += dS K  →  fp32 reduce-add to global memory</text>
+<rect x="800" y="40" width="210" height="150" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="905.0" y="64.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Postprocess</text>
+<text x="905.0" y="92.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >dQ = scale · accumulator</text>
+<text x="905.0" y="112.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >fp32 → bf16</text>
+<line x1="240" y1="115" x2="298" y2="115" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="740" y1="115" x2="798" y2="115" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="269.0" y="106.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >PDL</text>
+<text x="769.0" y="106.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >PDL</text>
+<rect x="30" y="216" width="210" height="104" rx="6" fill="#fbe3d8" stroke="#eb6834" stroke-width="1.2"/>
+<text x="135.0" y="238.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >64-token blocks, S ≤ 128K</text>
+<text x="135.0" y="262.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >pass 1: dK, dV; store dS tiles</text>
+<text x="135.0" y="280.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >pass 2: dQ from stored tiles</text>
+<text x="135.0" y="298.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >no fp32 read-modify-write</text>
+<rect x="800" y="216" width="210" height="104" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="905.0" y="238.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >256-token blocks: 2-CTA</text>
+<text x="905.0" y="262.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >a CTA pair covers the 256-row</text>
+<text x="905.0" y="280.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >KV block with M=256 MMAs;</text>
+<text x="905.0" y="298.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >each loads half of Q, dO</text>
+</svg>

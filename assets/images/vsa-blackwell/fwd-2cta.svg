@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="360" viewBox="0 0 1040 360" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="360" fill="#fcfcfb"/>
+<text x="30.0" y="34.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >128-token blocks</text>
+<rect x="36" y="52" width="96" height="50" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1"/>
+<text x="84.0" y="82.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 0 · 128 rows</text>
+<rect x="36" y="104" width="96" height="50" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1"/>
+<text x="84.0" y="134.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 1 · 128 rows</text>
+<rect x="36" y="156" width="96" height="50" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1"/>
+<text x="84.0" y="186.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 0 · 128 rows</text>
+<rect x="36" y="208" width="96" height="50" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1"/>
+<text x="84.0" y="238.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 1 · 128 rows</text>
+<path d="M140,52 h8 v102 h-8" fill="none" stroke="#52514e" stroke-width="1.4"/>
+<text x="154.0" y="107.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >joint MMA 0</text>
+<path d="M140,156 h8 v102 h-8" fill="none" stroke="#52514e" stroke-width="1.4"/>
+<text x="154.0" y="211.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >joint MMA 1</text>
+<text x="154.0" y="262.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >512 rows · 4 lists</text>
+<text x="36.0" y="288.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >each joint M=256 MMA spans 2 blocks</text>
+<text x="36.0" y="306.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >→ must visit the union of 2 lists</text>
+<text x="36.0" y="324.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >(2.7× the KV blocks at 25%)</text>
+<text x="36.0" y="342.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >0.4–0.5× of 1-CTA</text>
+<text x="370.0" y="34.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >256-token blocks</text>
+<rect x="376" y="52" width="96" height="50" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1"/>
+<text x="424.0" y="82.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 0 · 128 rows</text>
+<rect x="376" y="104" width="96" height="50" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1"/>
+<text x="424.0" y="134.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 1 · 128 rows</text>
+<rect x="376" y="156" width="96" height="50" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1"/>
+<text x="424.0" y="186.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 0 · 128 rows</text>
+<rect x="376" y="208" width="96" height="50" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1"/>
+<text x="424.0" y="238.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 1 · 128 rows</text>
+<path d="M480,52 h8 v102 h-8" fill="none" stroke="#52514e" stroke-width="1.4"/>
+<text x="494.0" y="107.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >joint MMA 0</text>
+<path d="M480,156 h8 v102 h-8" fill="none" stroke="#52514e" stroke-width="1.4"/>
+<text x="494.0" y="211.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >joint MMA 1</text>
+<text x="494.0" y="262.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >512 rows · 2 lists</text>
+<text x="376.0" y="288.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >each joint MMA is one block, one list</text>
+<text x="376.0" y="306.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >→ 2 K/V streams per cluster</text>
+<text x="376.0" y="324.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >(same bytes per CTA as 1-CTA)</text>
+<text x="376.0" y="342.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >0.91–0.97× of 1-CTA</text>
+<text x="710.0" y="34.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >512-token blocks</text>
+<rect x="716" y="52" width="96" height="50" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1"/>
+<text x="764.0" y="82.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 0 · 128 rows</text>
+<rect x="716" y="104" width="96" height="50" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1"/>
+<text x="764.0" y="134.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 1 · 128 rows</text>
+<rect x="716" y="156" width="96" height="50" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1"/>
+<text x="764.0" y="186.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 0 · 128 rows</text>
+<rect x="716" y="208" width="96" height="50" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1"/>
+<text x="764.0" y="238.0" font-size="10.5" fill="#52514e" text-anchor="middle" font-weight="400" >CTA 1 · 128 rows</text>
+<path d="M820,52 h8 v102 h-8" fill="none" stroke="#52514e" stroke-width="1.4"/>
+<text x="834.0" y="107.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >joint MMA 0</text>
+<path d="M820,156 h8 v102 h-8" fill="none" stroke="#52514e" stroke-width="1.4"/>
+<text x="834.0" y="211.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >joint MMA 1</text>
+<text x="834.0" y="262.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >512 rows · 1 list</text>
+<text x="716.0" y="288.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >the whole cluster is one block</text>
+<text x="716.0" y="306.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >→ one shared K/V stream</text>
+<text x="716.0" y="324.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >(K/V requests halved)</text>
+<text x="716.0" y="342.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >best kernel at 8K and 128K</text>
+</svg>

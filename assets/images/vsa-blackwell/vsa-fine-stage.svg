@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="300" viewBox="0 0 1040 300" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="300" fill="#fcfcfb"/>
+<text x="174.0" y="38.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="400" >KV blocks</text>
+<text x="54.0" y="156.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="400" transform="rotate(-90 54 156.0)">query blocks</text>
+<rect x="70" y="52" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="52" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="52" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="52" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="52" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="52" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="52" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="52" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="70" y="78" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="78" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="78" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="78" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="78" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="78" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="78" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="78" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="70" y="104" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="104" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="104" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="104" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="104" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="104" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="104" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="104" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="70" y="130" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="130" width="24" height="24" rx="3" fill="#2a78d6" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="130" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="130" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="130" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="130" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="130" width="24" height="24" rx="3" fill="#2a78d6" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="130" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="70" y="156" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="156" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="156" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="156" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="156" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="156" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="156" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="156" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="70" y="182" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="182" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="182" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="182" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="182" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="182" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="182" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="182" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="70" y="208" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="208" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="208" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="208" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="208" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="208" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="208" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="208" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="70" y="234" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="96" y="234" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="122" y="234" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="148" y="234" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="174" y="234" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="200" y="234" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="226" y="234" width="24" height="24" rx="3" fill="#9ec5f4" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="252" y="234" width="24" height="24" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1"/>
+<rect x="67" y="127" width="212" height="30" rx="4" fill="none" stroke="#2a78d6" stroke-width="2"/>
+<text x="70.0" y="284.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400" >Row 3: query block 3 attends only KV blocks 1 and 6.</text>
+<text x="360.0" y="84.0" font-size="13.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >VSA's fine stage is block-sparse attention.</text>
+<text x="360.0" y="112.0" font-size="13" fill="#52514e" text-anchor="start" font-weight="400" >Tokens are grouped into blocks: 64-token (4×4×4) video cubes by default.</text>
+<text x="360.0" y="140.0" font-size="13" fill="#52514e" text-anchor="start" font-weight="400" >A coarse stage scores pooled blocks and keeps the top-k KV blocks per query block.</text>
+<text x="360.0" y="168.0" font-size="13" fill="#52514e" text-anchor="start" font-weight="400" >Each query block then attends exactly to the tokens of its own top-k list.</text>
+<text x="360.0" y="196.0" font-size="13" fill="#52514e" text-anchor="start" font-weight="400" >Neighbouring query blocks generally select different lists.</text>
+<text x="360.0" y="224.0" font-size="13" fill="#52514e" text-anchor="start" font-weight="400" >At 25% density (top-k = 2 of 8 here) the work is a quarter of dense attention.</text>
+</svg>

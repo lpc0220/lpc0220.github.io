@@ -1,0 +1,26 @@
+title: Pengcheng Li
+description: >-
+  Pengcheng Li's technical blog on AI and AGI — learnings over time.
+url: "https://lpc0220.github.io"
+baseurl: ""
+author:
+  name: Pengcheng Li
+github_username: lpc0220
+
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+permalink: /blog/:title/
+show_excerpts: true
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - _tools/
