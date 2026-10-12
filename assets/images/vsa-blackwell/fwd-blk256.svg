@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="560" viewBox="0 0 1040 560" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="560" fill="#fcfcfb"/>
+<text x="30.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >1 · One 256-token query block</text>
+<text x="270.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >2 · One 128-key K/V tile per step</text>
+<text x="600.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >3 · TMEM (128 lanes × 512 columns)</text>
+<rect x="30" y="62" width="200" height="236" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="130.0" y="86.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >q block b · 256 rows</text>
+<text x="130.0" y="104.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >one top-k list</text>
+<rect x="44" y="118" width="172" height="76" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="130.0" y="151.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >rows 0–127</text>
+<text x="130.0" y="169.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >M-tile 0</text>
+<rect x="44" y="208" width="172" height="76" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="130.0" y="241.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >rows 128–255</text>
+<text x="130.0" y="259.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >M-tile 1</text>
+<rect x="270" y="62" width="220" height="236" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="380.0" y="86.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >selected KV block j · 256 keys</text>
+<text x="380.0" y="104.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >taken in two steps</text>
+<rect x="284" y="118" width="192" height="76" rx="4" fill="#d6f1e6" stroke="#52514e" stroke-width="1.8"/>
+<text x="380.0" y="151.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
+<text x="380.0" y="169.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >this step</text>
+<rect x="284" y="208" width="192" height="76" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="380.0" y="241.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
+<text x="380.0" y="259.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >next step</text>
+<rect x="600" y="62" width="150" height="100" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="675.0" y="106.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes = 128 rows</text>
+<text x="675.0" y="124.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >cols = 128 keys</text>
+<text x="675.0" y="179.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >S, M-tile 0 · cols 0–127</text>
+<rect x="830" y="62" width="150" height="100" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="905.0" y="106.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes = 128 rows</text>
+<text x="905.0" y="124.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >cols = head dim 128</text>
+<text x="905.0" y="179.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >O, M-tile 0 · cols 256–383</text>
+<line x1="750" y1="112.0" x2="828" y2="112.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="790.0" y="104.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >P·V</text>
+<line x1="476" y1="156" x2="598" y2="112.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="600" y="198" width="150" height="100" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="675.0" y="242.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes = 128 rows</text>
+<text x="675.0" y="260.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >cols = 128 keys</text>
+<text x="675.0" y="315.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >S, M-tile 1 · cols 128–255</text>
+<rect x="830" y="198" width="150" height="100" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="905.0" y="242.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes = 128 rows</text>
+<text x="905.0" y="260.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >cols = head dim 128</text>
+<text x="905.0" y="315.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >O, M-tile 1 · cols 384–511</text>
+<line x1="750" y1="248.0" x2="828" y2="248.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="790.0" y="240.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >P·V</text>
+<line x1="476" y1="156" x2="598" y2="248.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="538.0" y="128.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >Q·Kᵀ</text>
+<text x="600.0" y="340.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >2 × (128 S + 128 O) = 512 columns → 128 keys per step</text>
+<text x="30.0" y="384.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >4 · K/V loads into the shared-memory ring, in order</text>
+<text x="30.0" y="416.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >128-token blocks</text>
+<text x="30.0" y="432.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >two lists: 4 loads per step</text>
+<rect x="250" y="404" width="46" height="26" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="268.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">A0</tspan></text>
+<rect x="300" y="404" width="46" height="26" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/><text x="318.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">B0</tspan></text>
+<rect x="364" y="404" width="46" height="26" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="382.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">A0</tspan></text>
+<rect x="414" y="404" width="46" height="26" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="432.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">A1</tspan></text>
+<rect x="464" y="404" width="46" height="26" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/><text x="482.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">B0</tspan></text>
+<rect x="514" y="404" width="46" height="26" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/><text x="532.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">B1</tspan></text>
+<rect x="578" y="404" width="46" height="26" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="596.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">A1</tspan></text>
+<rect x="628" y="404" width="46" height="26" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="646.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">A2</tspan></text>
+<rect x="678" y="404" width="46" height="26" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/><text x="696.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">B1</tspan></text>
+<rect x="728" y="404" width="46" height="26" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/><text x="746.0" y="421.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">B2</tspan></text>
+<text x="788.0" y="421.0" font-size="13" fill="#52514e" text-anchor="start" font-weight="400" >…</text>
+<text x="30.0" y="462.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >256-token blocks</text>
+<text x="30.0" y="478.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >one list: 2 loads per step</text>
+<rect x="250" y="450" width="46" height="26" rx="3" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/><text x="268.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">0</tspan></text>
+<rect x="314" y="450" width="46" height="26" rx="3" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/><text x="332.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">0</tspan></text>
+<rect x="364" y="450" width="46" height="26" rx="3" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/><text x="382.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">1</tspan></text>
+<rect x="428" y="450" width="46" height="26" rx="3" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/><text x="446.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">1</tspan></text>
+<rect x="478" y="450" width="46" height="26" rx="3" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/><text x="496.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">2</tspan></text>
+<rect x="542" y="450" width="46" height="26" rx="3" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/><text x="560.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">2</tspan></text>
+<rect x="592" y="450" width="46" height="26" rx="3" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/><text x="610.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">3</tspan></text>
+<rect x="656" y="450" width="46" height="26" rx="3" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/><text x="674.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">V<tspan dy="3" font-size="9">3</tspan></text>
+<rect x="706" y="450" width="46" height="26" rx="3" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/><text x="724.0" y="467.0" font-size="12" fill="#0b0b0b" text-anchor="middle">K<tspan dy="3" font-size="9">4</tspan></text>
+<text x="766.0" y="467.0" font-size="13" fill="#52514e" text-anchor="start" font-weight="400" >…</text>
+<text x="250.0" y="492.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >256-token row: tile t = step t; the color changes with each selected block (two steps per block).</text>
+<text x="30.0" y="528.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Both M-tiles use the same list, so each K/V tile is loaded once and both M-tiles' MMAs read it, as in dense attention.</text>
+<text x="30.0" y="548.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >TMEM layout, softmax and step size (128 keys) are the same as for 128-token blocks.</text>
+</svg>

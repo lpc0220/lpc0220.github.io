@@ -34,9 +34,19 @@ The one structural difference is K/V reuse. Dense attention loads each K/V tile 
 
 *Figure 3. 64-token blocks: each query block gathers four KV blocks from its own list per step; its 64 × 256 score tile uses all 128 TMEM lanes, with keys 0–127 in lanes 0–63 and keys 128–255 in lanes 64–127.*
 
-**256-token blocks: one list per CTA.** A 256-token query block spans both M-tiles, so the CTA's two M-tiles are the two halves of **one** block and share its list. Each K/V tile is gathered once and feeds both MMAs, as in dense attention. Each selected KV block is gathered as two 128-key tiles, because a 256-key S tile would need 768 TMEM columns. Before this change the 256-token kernel gathered every K/V tile twice and trailed FA4 at 128K tokens (0.94×). After it, it leads at every length. With fewer index lookups and longer contiguous gathers, it is also 44% faster than our 64-token kernel at 4K tokens and 32% at 64K.
+**256-token blocks: one query block per CTA, one shared K/V stream** (Figure 4).
 
-**512-token blocks: a 2-CTA pair shares one K/V stream.** A 1-CTA kernel puts at most 256 query rows behind each K/V gather, since four M-tiles would need 1,024 TMEM columns. Blackwell's `cta_group::2` MMA lets a pair of CTAs compute one 256-row tile together, so a 2-CTA cluster covers 512 rows. That pays only when all 512 rows share K/V, which depends on the block size (Figure 4):
+- **Rows.** A 256-token query block has 256 rows, enough for both M-tiles. Each CTA takes one query block: rows 0–127 are M-tile 0 and rows 128–255 are M-tile 1. Both M-tiles belong to the same block, so they share one top-k list.
+- **Keys.** A step still covers 128 keys, as with 128-token blocks. TMEM has 512 columns, and each M-tile needs one S column per key plus 128 O columns, so 2 × (128 + 128) = 512 is the limit. A selected 256-token KV block therefore takes two steps: keys 0–127, then keys 128–255. Each step loads one 128-key K tile and one V tile, with one TMA each.
+- **Reuse.** Both M-tiles read the same keys, so each K/V tile is loaded once, and both M-tiles' MMAs read it from the same shared-memory slot, as in dense attention. That is two loads per step, versus four for 128-token blocks.
+
+The TMEM layout and softmax are the same as for 128-token blocks. Our first 256-token kernel still loaded a separate copy of every tile for each M-tile, as the 128-token kernel does, and trailed FA4 at 128K tokens (0.94×). Sharing the stream made it faster than FA4 at every length. It is also 44% faster than our 64-token kernel at 4K tokens and 32% at 64K, from fewer, longer gathers and fewer index lookups.
+
+![256-token blocks: one query block per CTA and one shared K/V stream](/assets/images/vsa-blackwell/fwd-blk256.svg)
+
+*Figure 4. 256-token blocks: the CTA's two M-tiles are the two halves of one query block, so every 128-key K/V tile is loaded once and read by both.*
+
+**512-token blocks: a 2-CTA pair shares one K/V stream.** A 1-CTA kernel puts at most 256 query rows behind each K/V gather, since four M-tiles would need 1,024 TMEM columns. Blackwell's `cta_group::2` MMA lets a pair of CTAs compute one 256-row tile together, so a 2-CTA cluster covers 512 rows. That pays only when all 512 rows share K/V, which depends on the block size (Figure 5):
 
 - **128-token blocks:** each joint 256-row MMA spans two blocks with different lists, so it must visit the union of both lists. That is 2.7× more KV blocks at 25% density, and the 2-CTA kernel runs at 0.4–0.5× the 1-CTA one.
 - **256-token blocks:** each joint MMA is one block with one list, but the pair processes two blocks, so it streams two K/V sequences and loads the same bytes per CTA as 1-CTA. Result: 0.91–0.97× of 1-CTA.
@@ -44,17 +54,17 @@ The one structural difference is K/V reuse. Dense attention loads each K/V tile 
 
 ![2-CTA geometry for 128-, 256- and 512-token blocks](/assets/images/vsa-blackwell/fwd-2cta.svg)
 
-*Figure 4. A 2-CTA cluster covers 512 query rows. Colors mark distinct top-k lists.*
+*Figure 5. A 2-CTA cluster covers 512 query rows. Colors mark distinct top-k lists.*
 
 **FastVideo's extensions cost nothing measurable.** The upstream kernel also supports per-block valid lengths (padded video edges), returns the log-sum-exp for the backward pass, and reads V in its natural layout. A full-block check skips the key mask whenever a block is complete. With all three added, throughput moved by +0.7% (64-token blocks) and −0.4% (128-token blocks), within run-to-run noise.
 
 ## 3. Backward kernel
 
-**Structure.** The backward pass runs three kernels, chained with programmatic dependent launch (PDL) so that each kernel's launch and prologue overlap the previous kernel's tail (Figure 5). The main kernel is KV-stationary: one CTA owns one KV block, loads K and V once, and walks the list of query blocks that selected it (FastVideo's inverted index). It accumulates dK and dV in TMEM and sends each dQ partial to an fp32 global accumulator with a TMA reduce-add. The tiles, warp roles and TMEM map follow the FA4 sm100 backward, and we deviate only where sparsity forces it.
+**Structure.** The backward pass runs three kernels, chained with programmatic dependent launch (PDL) so that each kernel's launch and prologue overlap the previous kernel's tail (Figure 6). The main kernel is KV-stationary: one CTA owns one KV block, loads K and V once, and walks the list of query blocks that selected it (FastVideo's inverted index). It accumulates dK and dV in TMEM and sends each dQ partial to an fp32 global accumulator with a TMA reduce-add. The tiles, warp roles and TMEM map follow the FA4 sm100 backward, and we deviate only where sparsity forces it.
 
 ![Backward pipeline](/assets/images/vsa-blackwell/bwd-pipeline.svg)
 
-*Figure 5. Backward pipeline: preprocess, KV-stationary main kernel, postprocess.*
+*Figure 6. Backward pipeline: preprocess, KV-stationary main kernel, postprocess.*
 
 **dQ is the bottleneck.** dK and dV stay on chip, but a query block's dQ is a sum over its top-k KV blocks, which live in different CTAs. That sum goes through L2 as fp32 read-modify-write traffic. The traffic grows with S²·density, the same as the FLOPs. At 64-token blocks it caps the one-pass kernel at about 750 TFLOPS no matter how fast the math is. Instead of lowering the accumulator's precision, the 64-token backward has a **two-pass** variant:
 
@@ -87,7 +97,7 @@ The baselines are FastVideo's Triton kernel and FlashInfer at 64 tokens, FlashIn
 
 ![Forward TFLOPS vs sequence length](/assets/images/vsa-blackwell/fwd-perf.svg)
 
-*Figure 6. Forward throughput on GB200.*
+*Figure 7. Forward throughput on GB200.*
 
 | Block | Baseline | 4K | 8K | 16K | 32K | 64K | 128K |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -104,7 +114,7 @@ The baselines are FastVideo's Triton backward at 64 tokens, and FA4's sm100 back
 
 ![Backward TFLOPS vs sequence length](/assets/images/vsa-blackwell/bwd-perf.svg)
 
-*Figure 7. Backward throughput on GB200.*
+*Figure 8. Backward throughput on GB200.*
 
 | Block | Baseline | 4K | 8K | 16K | 32K | 64K | 128K | 256K | 512K |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |

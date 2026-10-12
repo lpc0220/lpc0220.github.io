@@ -283,6 +283,78 @@ def blk128_diagram(path):
     save(path, o)
 
 
+def blk256_diagram(path):
+    w, h = 1040, 560
+    o = svg_open(w, h)
+    o.append(text(30, 36, "1 · One 256-token query block", 13, INK, weight=600))
+    o.append(text(270, 36, "2 · One 128-key K/V tile per step", 13, INK, weight=600))
+    o.append(text(600, 36, "3 · TMEM (128 lanes × 512 columns)", 13, INK, weight=600))
+
+    o.append(box(30, 62, 200, 236, "#ffffff"))
+    o.append(text(130, 86, "q block b · 256 rows", 12.5, INK, "middle", 600))
+    o.append(text(130, 104, "one top-k list", 11, INK_2, "middle"))
+    for m in range(2):
+        y = 118 + m * 90
+        o.append(box(44, y, 172, 76, BLUE_L, rx=4))
+        o.append(text(130, y + 33, f"rows {128 * m}–{128 * m + 127}", 12, INK, "middle", 600))
+        o.append(text(130, y + 51, f"M-tile {m}", 11, INK_2, "middle"))
+
+    o.append(box(270, 62, 220, 236, "#ffffff"))
+    o.append(text(380, 86, "selected KV block j · 256 keys", 12.5, INK, "middle", 600))
+    o.append(text(380, 104, "taken in two steps", 11, INK_2, "middle"))
+    for s in range(2):
+        y = 118 + s * 90
+        o.append(box(284, y, 192, 76, AQUA_L, rx=4, stroke=INK_2 if s == 0 else PANEL_BORDER,
+                     sw=1.8 if s == 0 else 1.2))
+        o.append(text(380, y + 33, f"keys {128 * s}–{128 * s + 127}", 12, INK, "middle", 600))
+        o.append(text(380, y + 51, "this step" if s == 0 else "next step", 11, INK_2, "middle"))
+
+    tw, th, sx, ox = 150, 100, 600, 830
+    for m in range(2):
+        y = 62 + m * 136
+        mid = y + th / 2
+        for x, lab, cols, body in ((sx, f"S, M-tile {m}", f"cols {128 * m}–{128 * m + 127}", "128 keys"),
+                                   (ox, f"O, M-tile {m}", f"cols {256 + 128 * m}–{383 + 128 * m}", "head dim 128")):
+            o.append(box(x, y, tw, th, BLUE_L, rx=3))
+            o.append(text(x + tw / 2, mid - 6, "lanes = 128 rows", 11, INK_2, "middle"))
+            o.append(text(x + tw / 2, mid + 12, f"cols = {body}", 11.5, INK, "middle", 600))
+            o.append(text(x + tw / 2, y + th + 17, f"{lab} · {cols}", 11.5, INK_2, "middle"))
+        o.append(arrow(sx + tw, mid, ox - 2, mid))
+        o.append(text((sx + tw + ox) / 2, mid - 8, "P·V", 11, INK_3, "middle"))
+        o.append(arrow(476, 156, sx - 2, mid))
+    o.append(text(538, 128, "Q·Kᵀ", 11, INK_3, "middle"))
+    o.append(text(600, 340, "2 × (128 S + 128 O) = 512 columns → 128 keys per step", 11.5, INK_2))
+
+    o.append(text(30, 384, "4 · K/V loads into the shared-memory ring, in order", 13, INK, weight=600))
+    k128 = [[("K", "A0", BLUE_L), ("K", "B0", ORANGE_L)],
+            [("V", "A0", BLUE_L), ("K", "A1", BLUE_L), ("V", "B0", ORANGE_L), ("K", "B1", ORANGE_L)],
+            [("V", "A1", BLUE_L), ("K", "A2", BLUE_L), ("V", "B1", ORANGE_L), ("K", "B2", ORANGE_L)]]
+    blockfill = [AQUA_L, AQUA_L, VIOLET_L, VIOLET_L, AQUA_L]
+    k256 = [[("K", "0", blockfill[0])]] + [[("V", str(t), blockfill[t]), ("K", str(t + 1), blockfill[t + 1])]
+                                          for t in range(4)]
+    streams = [("128-token blocks", "two lists: 4 loads per step", k128),
+               ("256-token blocks", "one list: 2 loads per step", k256)]
+    for s, (lab, note, groups) in enumerate(streams):
+        y = 404 + s * 46
+        o.append(text(30, y + 12, lab, 12, INK, weight=600))
+        o.append(text(30, y + 28, note, 11, INK_2))
+        x = 250
+        for g in groups:
+            for name, sub, fill in g:
+                o.append(tile(x, y, name, sub, fill))
+                x += 50
+            x += 14
+        o.append(text(x - 4, y + 17, "…", 13, INK_2))
+    o.append(text(250, 492, "256-token row: tile t = step t; the color changes with each selected block (two steps per block).",
+                  11, INK_3))
+
+    o.append(text(30, 528, "Both M-tiles use the same list, so each K/V tile is loaded once and both M-tiles' MMAs read it, as in dense attention.",
+                  12, INK_2))
+    o.append(text(30, 548, "TMEM layout, softmax and step size (128 keys) are the same as for 128-token blocks.",
+                  12, INK_2))
+    save(path, o)
+
+
 def fwd_diagram(path):
     w, h = 1040, 520
     o = svg_open(w, h)
@@ -427,6 +499,7 @@ if __name__ == "__main__":
     vsa_diagram(os.path.join(OUT, "vsa-fine-stage.svg"))
     blk128_diagram(os.path.join(OUT, "fwd-blk128.svg"))
     fwd_diagram(os.path.join(OUT, "fwd-dualpack.svg"))
+    blk256_diagram(os.path.join(OUT, "fwd-blk256.svg"))
     twocta_diagram(os.path.join(OUT, "fwd-2cta.svg"))
     bwd_diagram(os.path.join(OUT, "bwd-pipeline.svg"))
     print("wrote", sorted(os.listdir(OUT)))
