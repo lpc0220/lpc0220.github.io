@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Block-Sparse Attention for Video Diffusion on Blackwell: VSA Kernels"
+title: "Block-Sparse Attention for Video Diffusion on Blackwell"
 author: Pengcheng Li
 date: 2026-10-12
 description: "Blackwell (sm_100a) CUDA kernels for the fine stage of Video Sparse Attention: design and measured performance."
