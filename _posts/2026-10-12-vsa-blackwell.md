@@ -154,13 +154,6 @@ The 64- and 128-token kernels are upstream in FastVideo: the forward in [#1719](
 
 The forward rows use 90% sparsity (top-k ≈ 10% of blocks); the backward rows use 25% density and include FastVideo's index inversion in both columns. Both backwards are validated against an fp32 reference; at 128-token blocks the CUDA and Triton gradients agree to a relative error of at most 2×10⁻².
 
-## 5. Limitations and next steps
-
-- All numbers are from GB200. The kernels also build for GB300 (sm_103a, [#1833](https://github.com/hao-ai-lab/FastVideo/pull/1833)), but most of the tuning was done on GB200.
-- FastVideo routes only the 64- and 128-token kernels; its 256-token path uses FA4.
-- Past 32K tokens the backward is limited by the fp32 dQ reduction stream. A work order that keeps each query block's partials L2-resident is the next step.
-- Vera Rubin (sm_107a) support is planned.
-
 ## Acknowledgements
 
 Thanks to the FastVideo maintainers for reviewing and merging the kernels, and to the FlashAttention-4 authors, whose design both kernels follow.
