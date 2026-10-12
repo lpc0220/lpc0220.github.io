@@ -217,6 +217,72 @@ def vsa_diagram(path):
     save(path, o)
 
 
+def tile(x, y, name, sub, fill, w=46, h=26):
+    label = (f'<text x="{x + w / 2 - (5 if sub else 0):.1f}" y="{y + 17:.1f}" font-size="12" fill="{INK}" '
+             f'text-anchor="middle">{name}<tspan dy="3" font-size="9">{sub}</tspan></text>')
+    return box(x, y, w, h, fill, rx=3) + label
+
+
+def blk128_diagram(path):
+    w, h = 1040, 540
+    o = svg_open(w, h)
+    o.append(text(30, 36, "1 · Two query blocks", 13, INK, weight=600))
+    o.append(text(250, 36, "2 · 1 KV block per step", 13, INK, weight=600))
+    o.append(text(580, 36, "3 · TMEM (128 lanes × 512 columns)", 13, INK, weight=600))
+
+    rows = [("q block 2p", "A", BLUE_L, ("S(2p)", "cols 0–127"), ("O(2p)", "cols 256–383")),
+            ("q block 2p+1", "B", ORANGE_L, ("S(2p+1)", "cols 128–255"), ("O(2p+1)", "cols 384–511"))]
+    th = 110
+    sx, ox, tw = 580, 790, 150
+    for r, (name, lst, fill, s_lab, o_lab) in enumerate(rows):
+        y0 = 62 + r * 152
+        mid = y0 + th / 2
+        o.append(box(30, mid - 40, 180, 80, fill))
+        o.append(text(120, mid - 4, name, 13, INK, "middle", 600))
+        o.append(text(120, mid + 16, f"128 rows · own top-k list {lst}", 11, INK_2, "middle"))
+        o.append(arrow(210, mid, 248, mid))
+        o.append(box(250, mid - 40, 210, 80, fill, rx=4))
+        o.append(text(355, mid - 4, f"list {lst}, block j", 12.5, INK, "middle", 600))
+        o.append(text(355, mid + 16, "128 keys = one K/V tile", 11, INK_2, "middle"))
+        o.append(arrow(460, mid, sx - 2, mid))
+        o.append(text((460 + sx) / 2, mid - 8, "Q·Kᵀ", 11, INK_3, "middle"))
+        for x, (lab, cols), body in ((sx, s_lab, "128 keys"), (ox, o_lab, "head dim 128")):
+            o.append(box(x, y0, tw, th, fill, rx=3))
+            o.append(text(x + tw / 2, mid - 6, "lanes 0–127 = rows", 11, INK_2, "middle"))
+            o.append(text(x + tw / 2, mid + 12, f"cols = {body}", 11.5, INK, "middle", 600))
+            o.append(text(x + tw / 2, y0 + th + 17, f"{lab} · {cols}", 11.5, INK_2, "middle"))
+        o.append(arrow(sx + tw, mid, ox - 2, mid))
+        o.append(text((sx + tw + ox) / 2, mid - 8, "P·V", 11, INK_3, "middle"))
+
+    o.append(text(30, 384, "4 · K/V loads into the shared-memory ring, in order", 13, INK, weight=600))
+    gray = "#eeeeeb"
+    streams = [
+        ("Dense attention", "each tile feeds both M-tiles",
+         [[("K", "0", gray)], [("V", "0", gray), ("K", "1", gray)], [("V", "1", gray), ("K", "2", gray)]]),
+        ("128-token blocks", "one tile per M-tile: 2× the loads",
+         [[("K", "A0", BLUE_L), ("K", "B0", ORANGE_L)],
+          [("V", "A0", BLUE_L), ("K", "A1", BLUE_L), ("V", "B0", ORANGE_L), ("K", "B1", ORANGE_L)],
+          [("V", "A1", BLUE_L), ("K", "A2", BLUE_L), ("V", "B1", ORANGE_L), ("K", "B2", ORANGE_L)]]),
+    ]
+    for s, (lab, note, groups) in enumerate(streams):
+        y = 404 + s * 46
+        o.append(text(30, y + 12, lab, 12, INK, weight=600))
+        o.append(text(30, y + 28, note, 11, INK_2))
+        x = 250
+        for g in groups:
+            for name, sub, fill in g:
+                o.append(tile(x, y, name, sub, fill))
+                x += 50
+            x += 14
+        o.append(text(x - 4, y + 17, "…", 13, INK_2))
+
+    o.append(text(30, 512, "Four softmax warps own S(2p) and four own S(2p+1), one thread per row. P (bf16) overwrites S in place, and P·V reads it from TMEM.",
+                  12, INK_2))
+    o.append(text(30, 532, "Each step, the MMA warp runs P·V and the next Q·Kᵀ for one query block, then the other, so each block's softmax overlaps the other's MMAs.",
+                  12, INK_2))
+    save(path, o)
+
+
 def fwd_diagram(path):
     w, h = 1040, 520
     o = svg_open(w, h)
@@ -359,6 +425,7 @@ if __name__ == "__main__":
                     ["This work", "FastVideo Triton", "FA4"],
                     "Backward · GB200 · H=8, D=128, 25% density")
     vsa_diagram(os.path.join(OUT, "vsa-fine-stage.svg"))
+    blk128_diagram(os.path.join(OUT, "fwd-blk128.svg"))
     fwd_diagram(os.path.join(OUT, "fwd-dualpack.svg"))
     twocta_diagram(os.path.join(OUT, "fwd-2cta.svg"))
     bwd_diagram(os.path.join(OUT, "bwd-pipeline.svg"))
