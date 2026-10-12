@@ -218,48 +218,54 @@ def vsa_diagram(path):
 
 
 def fwd_diagram(path):
-    w, h = 1040, 380
+    w, h = 1040, 520
     o = svg_open(w, h)
-    o.append(text(30, 36, "1 · Two query blocks per CTA", 13, INK, weight=600))
-    o.append(text(260, 36, "2 · One step = 4 KV blocks", 13, INK, weight=600))
-    o.append(text(520, 36, "3 · TMEM: 128 lanes × 512 columns", 13, INK, weight=600))
+    o.append(text(30, 36, "1 · Two query blocks", 13, INK, weight=600))
+    o.append(text(250, 36, "2 · 4 KV blocks per step", 13, INK, weight=600))
+    o.append(text(580, 36, "3 · TMEM (128 lanes × 512 columns)", 13, INK, weight=600))
 
-    for i, (name, lst, fill) in enumerate([("q block 2p", "list A", BLUE_L),
-                                           ("q block 2p+1", "list B", ORANGE_L)]):
-        y = 62 + i * 116
-        o.append(box(30, y, 180, 90, fill))
-        o.append(text(120, y + 40, name, 13, INK, "middle", 600))
-        o.append(text(120, y + 60, f"64 rows · own top-k {lst}", 11, INK_2, "middle"))
-    for j in range(4):
-        y = 62 + j * 52
-        fill = AQUA_L if j < 2 else VIOLET_L
-        o.append(box(260, y, 200, 42, fill))
-        o.append(text(360, y + 26, f"KV block {j} from list A", 12, INK, "middle"))
-    o.append(text(260, 290, "blocks 0–1 = keys 0–127 → lanes 0–63", 11, INK_2))
-    o.append(text(260, 306, "blocks 2–3 = keys 128–255 → lanes 64–127", 11, INK_2))
-    o.append(arrow(210, 107, 258, 107))
-    o.append(arrow(210, 223, 258, 223, dash=True))
-    o.append(text(30, 290, "List B's KV blocks are gathered", 11, INK_3))
-    o.append(text(30, 306, "into the same SMEM ring.", 11, INK_3))
+    rows = [("q block 2p", "A", BLUE_L, ("S(2p)", "cols 0–127"), ("O(2p)", "cols 256–383")),
+            ("q block 2p+1", "B", ORANGE_L, ("S(2p+1)", "cols 128–255"), ("O(2p+1)", "cols 384–511"))]
+    bh, bgap = 36, 6
+    stack_h = 4 * bh + 3 * bgap
+    sx, ox, tw = 580, 790, 150
+    for r, (name, lst, fill, s_lab, o_lab) in enumerate(rows):
+        y0 = 62 + r * 210
+        mid = y0 + stack_h / 2
+        o.append(box(30, mid - 45, 180, 90, fill))
+        o.append(text(120, mid - 5, name, 13, INK, "middle", 600))
+        o.append(text(120, mid + 15, f"64 rows · own top-k list {lst}", 11, INK_2, "middle"))
+        o.append(arrow(210, mid, 248, mid))
 
-    cols = [("S of 2p", BLUE_L), ("O of 2p", BLUE_L), ("S of 2p+1", ORANGE_L), ("O of 2p+1", ORANGE_L)]
-    cw, cx0 = 112, 520
-    for k, (lab, fill) in enumerate(cols):
-        x = cx0 + k * (cw + 8)
-        o.append(box(x, 62, cw, 208, fill, rx=3))
-        o.append(f'<line x1="{x}" y1="166" x2="{x + cw}" y2="166" stroke="{INK_3}" '
-                 f'stroke-width="1" stroke-dasharray="4 3"/>')
-        o.append(text(x + cw / 2, 108, "lanes 0–63", 11, INK_2, "middle"))
-        o.append(text(x + cw / 2, 125, "keys 0–127", 11.5, INK, "middle", 600))
-        o.append(text(x + cw / 2, 212, "lanes 64–127", 11, INK_2, "middle"))
-        o.append(text(x + cw / 2, 229, "keys 128–255", 11.5, INK, "middle", 600))
-        o.append(text(x + cw / 2, 290, lab, 11.5, INK_2, "middle"))
-        o.append(text(x + cw / 2, 306, "128 cols", 11, INK_3, "middle"))
-    o.append(arrow(460, 108, 518, 108))
-    o.append(arrow(460, 212, 518, 212))
-    o.append(text(30, 344, "The 64 × 256 score tile is stored in two halves (tcgen05.mma.ws, Layout E): keys 0–127 in lanes 0–63, keys 128–255 in lanes 64–127.",
+        for j in range(4):
+            y = y0 + j * (bh + bgap)
+            o.append(box(250, y, 210, bh, AQUA_L if j < 2 else VIOLET_L, rx=4))
+            o.append(text(355, y + 23, f"list {lst}, block {j + 1} · keys {64 * j}–{64 * j + 63}", 11.5, INK,
+                          "middle"))
+        upper = y0 + bh + bgap / 2
+        lower = y0 + 3 * bh + 2.5 * bgap
+        for yy in (upper, lower):
+            o.append(f'<path d="M464,{yy - bh / 2 - 2} h6 v{bh + bgap + 4} h-6" fill="none" '
+                     f'stroke="{INK_2}" stroke-width="1.3"/>')
+
+        half = stack_h / 2
+        for x, (lab, cols) in ((sx, s_lab), (ox, o_lab)):
+            o.append(box(x, y0, tw, stack_h, fill, rx=3))
+            o.append(f'<line x1="{x}" y1="{y0 + half}" x2="{x + tw}" y2="{y0 + half}" stroke="{INK_3}" '
+                     f'stroke-width="1" stroke-dasharray="4 3"/>')
+            o.append(text(x + tw / 2, y0 + half / 2 - 4, "lanes 0–63", 11, INK_2, "middle"))
+            o.append(text(x + tw / 2, y0 + half / 2 + 13, "keys 0–127", 11.5, INK, "middle", 600))
+            o.append(text(x + tw / 2, y0 + 1.5 * half - 4, "lanes 64–127", 11, INK_2, "middle"))
+            o.append(text(x + tw / 2, y0 + 1.5 * half + 13, "keys 128–255", 11.5, INK, "middle", 600))
+            o.append(text(x + tw / 2, y0 + stack_h + 17, f"{lab} · {cols}", 11.5, INK_2, "middle"))
+        o.append(arrow(472, upper, sx - 2, y0 + half / 2))
+        o.append(arrow(472, lower, sx - 2, y0 + 1.5 * half))
+        o.append(arrow(sx + tw, y0 + half, ox - 2, y0 + half))
+        o.append(text((sx + tw + ox) / 2, y0 + half - 8, "P·V", 11, INK_3, "middle"))
+
+    o.append(text(30, 488, "Each S tile holds a 64 × 256 score tile in two halves (tcgen05.mma.ws, Layout E). Both query blocks use the same 128 lanes, in different columns.",
                   12, INK_2))
-    o.append(text(30, 364, "Each softmax thread covers one row of one half; the correction warps merge the two halves of each row.",
+    o.append(text(30, 508, "Each O half is a partial output over its 128 keys; the correction warps merge the two halves of each row.",
                   12, INK_2))
     save(path, o)
 

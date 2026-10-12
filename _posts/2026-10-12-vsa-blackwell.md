@@ -24,7 +24,7 @@ The problem differs from dense attention in three ways. Every query block has it
 
 ![Dual-packed S in TMEM for 64-token blocks](/assets/images/vsa-blackwell/fwd-dualpack.svg)
 
-*Figure 2. 64-token blocks: each step's 64 × 256 score tile uses all 128 TMEM lanes, with keys 0–127 in lanes 0–63 and keys 128–255 in lanes 64–127.*
+*Figure 2. 64-token blocks: each query block gathers four KV blocks from its own list per step; its 64 × 256 score tile uses all 128 TMEM lanes, with keys 0–127 in lanes 0–63 and keys 128–255 in lanes 64–127.*
 
 **Block size matters more than tuning.** Across our own kernels, going from 64- to 256-token blocks raises throughput by 44% at 4K tokens and 32% at 64K: fewer index lookups, and longer contiguous gathers. At 128 tokens the kernel uses plain 128-row MMAs, the same tiling as dense attention. At 256 tokens, the CTA's two M-tiles are the two halves of **one** sparse block with one list, so each K/V tile is gathered once and feeds both MMAs. Before that change the 256-token kernel gathered every K/V tile twice and trailed FA4 at 128K tokens (0.94×). After it, it leads at every length.
 

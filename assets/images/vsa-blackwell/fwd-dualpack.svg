@@ -1,63 +1,73 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="380" viewBox="0 0 1040 380" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="520" viewBox="0 0 1040 520" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
-<rect width="1040" height="380" fill="#fcfcfb"/>
-<text x="30.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >1 · Two query blocks per CTA</text>
-<text x="260.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >2 · One step = 4 KV blocks</text>
-<text x="520.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >3 · TMEM: 128 lanes × 512 columns</text>
-<rect x="30" y="62" width="180" height="90" rx="6" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
-<text x="120.0" y="102.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600" >q block 2p</text>
-<text x="120.0" y="122.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 rows · own top-k list A</text>
-<rect x="30" y="178" width="180" height="90" rx="6" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
-<text x="120.0" y="218.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600" >q block 2p+1</text>
-<text x="120.0" y="238.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 rows · own top-k list B</text>
-<rect x="260" y="62" width="200" height="42" rx="6" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
-<text x="360.0" y="88.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >KV block 0 from list A</text>
-<rect x="260" y="114" width="200" height="42" rx="6" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
-<text x="360.0" y="140.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >KV block 1 from list A</text>
-<rect x="260" y="166" width="200" height="42" rx="6" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
-<text x="360.0" y="192.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >KV block 2 from list A</text>
-<rect x="260" y="218" width="200" height="42" rx="6" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
-<text x="360.0" y="244.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >KV block 3 from list A</text>
-<text x="260.0" y="290.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >blocks 0–1 = keys 0–127 → lanes 0–63</text>
-<text x="260.0" y="306.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >blocks 2–3 = keys 128–255 → lanes 64–127</text>
-<line x1="210" y1="107" x2="258" y2="107" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
-<line x1="210" y1="223" x2="258" y2="223" stroke="#52514e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-<text x="30.0" y="290.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >List B's KV blocks are gathered</text>
-<text x="30.0" y="306.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >into the same SMEM ring.</text>
-<rect x="520" y="62" width="112" height="208" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
-<line x1="520" y1="166" x2="632" y2="166" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
-<text x="576.0" y="108.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
-<text x="576.0" y="125.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
-<text x="576.0" y="212.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
-<text x="576.0" y="229.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
-<text x="576.0" y="290.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >S of 2p</text>
-<text x="576.0" y="306.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >128 cols</text>
-<rect x="640" y="62" width="112" height="208" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
-<line x1="640" y1="166" x2="752" y2="166" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
-<text x="696.0" y="108.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
-<text x="696.0" y="125.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
-<text x="696.0" y="212.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
-<text x="696.0" y="229.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
-<text x="696.0" y="290.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >O of 2p</text>
-<text x="696.0" y="306.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >128 cols</text>
-<rect x="760" y="62" width="112" height="208" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
-<line x1="760" y1="166" x2="872" y2="166" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
-<text x="816.0" y="108.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
-<text x="816.0" y="125.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
-<text x="816.0" y="212.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
-<text x="816.0" y="229.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
-<text x="816.0" y="290.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >S of 2p+1</text>
-<text x="816.0" y="306.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >128 cols</text>
-<rect x="880" y="62" width="112" height="208" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
-<line x1="880" y1="166" x2="992" y2="166" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
-<text x="936.0" y="108.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
-<text x="936.0" y="125.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
-<text x="936.0" y="212.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
-<text x="936.0" y="229.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
-<text x="936.0" y="290.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >O of 2p+1</text>
-<text x="936.0" y="306.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >128 cols</text>
-<line x1="460" y1="108" x2="518" y2="108" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
-<line x1="460" y1="212" x2="518" y2="212" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
-<text x="30.0" y="344.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >The 64 × 256 score tile is stored in two halves (tcgen05.mma.ws, Layout E): keys 0–127 in lanes 0–63, keys 128–255 in lanes 64–127.</text>
-<text x="30.0" y="364.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Each softmax thread covers one row of one half; the correction warps merge the two halves of each row.</text>
+<rect width="1040" height="520" fill="#fcfcfb"/>
+<text x="30.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >1 · Two query blocks</text>
+<text x="250.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >2 · 4 KV blocks per step</text>
+<text x="580.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >3 · TMEM (128 lanes × 512 columns)</text>
+<rect x="30" y="98.0" width="180" height="90" rx="6" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="120.0" y="138.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600" >q block 2p</text>
+<text x="120.0" y="158.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 rows · own top-k list A</text>
+<line x1="210" y1="143.0" x2="248" y2="143.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="250" y="62" width="210" height="36" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="85.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list A, block 1 · keys 0–63</text>
+<rect x="250" y="104" width="210" height="36" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="127.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list A, block 2 · keys 64–127</text>
+<rect x="250" y="146" width="210" height="36" rx="4" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="169.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list A, block 3 · keys 128–191</text>
+<rect x="250" y="188" width="210" height="36" rx="4" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="211.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list A, block 4 · keys 192–255</text>
+<path d="M464,81.0 h6 v46 h-6" fill="none" stroke="#52514e" stroke-width="1.3"/>
+<path d="M464,165.0 h6 v46 h-6" fill="none" stroke="#52514e" stroke-width="1.3"/>
+<rect x="580" y="62" width="150" height="162" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<line x1="580" y1="143.0" x2="730" y2="143.0" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="655.0" y="98.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
+<text x="655.0" y="115.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
+<text x="655.0" y="179.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
+<text x="655.0" y="196.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
+<text x="655.0" y="241.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >S(2p) · cols 0–127</text>
+<rect x="790" y="62" width="150" height="162" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<line x1="790" y1="143.0" x2="940" y2="143.0" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="865.0" y="98.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
+<text x="865.0" y="115.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
+<text x="865.0" y="179.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
+<text x="865.0" y="196.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
+<text x="865.0" y="241.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >O(2p) · cols 256–383</text>
+<line x1="472" y1="101.0" x2="578" y2="102.5" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="472" y1="185.0" x2="578" y2="183.5" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="730" y1="143.0" x2="788" y2="143.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="760.0" y="135.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >P·V</text>
+<rect x="30" y="308.0" width="180" height="90" rx="6" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="120.0" y="348.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600" >q block 2p+1</text>
+<text x="120.0" y="368.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 rows · own top-k list B</text>
+<line x1="210" y1="353.0" x2="248" y2="353.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="250" y="272" width="210" height="36" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="295.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list B, block 1 · keys 0–63</text>
+<rect x="250" y="314" width="210" height="36" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="337.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list B, block 2 · keys 64–127</text>
+<rect x="250" y="356" width="210" height="36" rx="4" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="379.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list B, block 3 · keys 128–191</text>
+<rect x="250" y="398" width="210" height="36" rx="4" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="355.0" y="421.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="400" >list B, block 4 · keys 192–255</text>
+<path d="M464,291.0 h6 v46 h-6" fill="none" stroke="#52514e" stroke-width="1.3"/>
+<path d="M464,375.0 h6 v46 h-6" fill="none" stroke="#52514e" stroke-width="1.3"/>
+<rect x="580" y="272" width="150" height="162" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<line x1="580" y1="353.0" x2="730" y2="353.0" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="655.0" y="308.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
+<text x="655.0" y="325.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
+<text x="655.0" y="389.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
+<text x="655.0" y="406.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
+<text x="655.0" y="451.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >S(2p+1) · cols 128–255</text>
+<rect x="790" y="272" width="150" height="162" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<line x1="790" y1="353.0" x2="940" y2="353.0" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="865.0" y="308.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 0–63</text>
+<text x="865.0" y="325.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 0–127</text>
+<text x="865.0" y="389.5" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >lanes 64–127</text>
+<text x="865.0" y="406.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >keys 128–255</text>
+<text x="865.0" y="451.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >O(2p+1) · cols 384–511</text>
+<line x1="472" y1="311.0" x2="578" y2="312.5" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="472" y1="395.0" x2="578" y2="393.5" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="730" y1="353.0" x2="788" y2="353.0" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="760.0" y="345.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" >P·V</text>
+<text x="30.0" y="488.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Each S tile holds a 64 × 256 score tile in two halves (tcgen05.mma.ws, Layout E). Both query blocks use the same 128 lanes, in different columns.</text>
+<text x="30.0" y="508.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Each O half is a partial output over its 128 keys; the correction warps merge the two halves of each row.</text>
 </svg>
