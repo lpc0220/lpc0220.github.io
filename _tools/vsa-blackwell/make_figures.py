@@ -42,23 +42,6 @@ FWD = [
     }),
 ]
 
-BWD_S = ["4K", "8K", "16K", "32K", "64K", "128K", "256K", "512K"]
-BWD = [
-    ("64-token blocks", {
-        "FastVideo Triton": [198, 313, 389, 433, 448, 452, 452, 437],
-        "This work": [465, 688, 860, 918, 857, 816, 767, 755],
-    }),
-    ("128-token blocks", {
-        "FA4": [266, 608, 999, 1260, 1155, 1025, 892, 828],
-        "This work": [598, 893, 1133, 1332, 1183, 1055, 923, 850],
-    }),
-    ("256-token blocks", {
-        "FA4": [172, 504, 954, 1332, 1278, 1219, 1104, 1057],
-        "This work": [639, 952, 1222, 1422, 1272, 1180, 1084, 1035],
-    }),
-]
-
-
 def esc(s):
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
@@ -443,63 +426,14 @@ def twocta_diagram(path):
     save(path, o)
 
 
-def bwd_diagram(path):
-    w, h = 1040, 340
-    o = svg_open(w, h)
-    o.append(box(30, 40, 210, 150, "#ffffff"))
-    o.append(text(135, 64, "Preprocess", 13, INK, "middle", 600))
-    for k, s in enumerate(["Δ = rowsum(dO ∘ O)", "zero the fp32 dQ accumulator",
-                           "zero dK, dV of unselected", "KV blocks; work order"]):
-        o.append(text(135, 92 + k * 20, s, 11.5, INK_2, "middle"))
-
-    o.append(box(300, 40, 440, 236, BLUE_L, BLUE))
-    o.append(text(520, 64, "Main: one CTA per KV block (KV-stationary)", 13, INK, "middle", 600))
-    o.append(text(520, 86, "K, V loaded once; loop over the query blocks that selected it", 11.5, INK_2,
-                  "middle"))
-    steps = ["Sᵀ = K Qᵀ  →  Pᵀ = exp2(scale · Sᵀ − LSE)",
-             "dPᵀ = V dOᵀ  →  dSᵀ = Pᵀ ∘ (dPᵀ − Δ)",
-             "dV += Pᵀ dO;  dK += dSᵀ Q   (accumulated in TMEM)",
-             "dQ += dS K  →  fp32 reduce-add to global memory"]
-    for k, s in enumerate(steps):
-        y = 104 + k * 40
-        o.append(box(320, y, 400, 32, "#ffffff", PANEL_BORDER, 4))
-        o.append(text(332, y + 21, s, 12, INK, extra='xml:space="preserve"'))
-
-    o.append(box(800, 40, 210, 150, "#ffffff"))
-    o.append(text(905, 64, "Postprocess", 13, INK, "middle", 600))
-    for k, s in enumerate(["dQ = scale · accumulator", "fp32 → bf16"]):
-        o.append(text(905, 92 + k * 20, s, 11.5, INK_2, "middle"))
-
-    o.append(arrow(240, 115, 298, 115))
-    o.append(arrow(740, 115, 798, 115))
-    o.append(text(269, 106, "PDL", 10.5, INK_3, "middle"))
-    o.append(text(769, 106, "PDL", 10.5, INK_3, "middle"))
-
-    o.append(box(30, 216, 210, 104, ORANGE_L, ORANGE))
-    o.append(text(135, 238, "64-token blocks, S ≤ 128K", 12.5, INK, "middle", 600))
-    for k, s in enumerate(["pass 1: dK, dV; store dS tiles", "pass 2: dQ from stored tiles",
-                           "no fp32 read-modify-write"]):
-        o.append(text(135, 262 + k * 18, s, 11, INK_2, "middle"))
-    o.append(box(800, 216, 210, 104, "#ffffff"))
-    o.append(text(905, 238, "256-token blocks: 2-CTA", 12.5, INK, "middle", 600))
-    for k, s in enumerate(["a CTA pair covers the 256-row", "KV block with M=256 MMAs;",
-                           "each loads half of Q, dO"]):
-        o.append(text(905, 262 + k * 18, s, 11, INK_2, "middle"))
-    save(path, o)
-
-
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     small_multiples(os.path.join(OUT, "fwd-perf.svg"), FWD, FWD_S, 1600, 400,
                     ["This work", "FastVideo Triton", "FlashInfer", "FA4"],
-                    "Forward · GB200 · H=8, D=128, 25% density")
-    small_multiples(os.path.join(OUT, "bwd-perf.svg"), BWD, BWD_S, 1600, 400,
-                    ["This work", "FastVideo Triton", "FA4"],
-                    "Backward · GB200 · H=8, D=128, 25% density")
+                    "GB200 · H=8, D=128, 25% density")
     vsa_diagram(os.path.join(OUT, "vsa-fine-stage.svg"))
     blk128_diagram(os.path.join(OUT, "fwd-blk128.svg"))
     fwd_diagram(os.path.join(OUT, "fwd-dualpack.svg"))
     blk256_diagram(os.path.join(OUT, "fwd-blk256.svg"))
     twocta_diagram(os.path.join(OUT, "fwd-2cta.svg"))
-    bwd_diagram(os.path.join(OUT, "bwd-pipeline.svg"))
     print("wrote", sorted(os.listdir(OUT)))
