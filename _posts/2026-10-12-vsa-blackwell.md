@@ -6,14 +6,6 @@ date: 2026-10-12
 description: "Blackwell (sm_100a) CUDA kernels for the fine stage of Video Sparse Attention: design and measured performance of the forward and backward passes."
 ---
 
-## TL;DR
-
-- We wrote native Blackwell (sm_100a) CUDA kernels for the fine stage of Video Sparse Attention (VSA): a forward pass and a backward pass, at block sizes of 64, 128, 256 and 512 tokens. The 64- and 128-token kernels are upstream in FastVideo ([#1719](https://github.com/hao-ai-lab/FastVideo/pull/1719), [#1819](https://github.com/hao-ai-lab/FastVideo/pull/1819), [#1866](https://github.com/hao-ai-lab/FastVideo/pull/1866)); all of them are in [strata-masonry](https://github.com/TokenFlowLab/strata-masonry).
-- **Forward:** 1.9–3.3× FastVideo's Triton kernel at 64-token blocks, and ahead of FlashInfer (128-token blocks) and FA4 (256-token blocks) at every sequence length we measured.
-- **Backward:** 1.7–2.4× the Triton backward at 64-token blocks. Against FA4: ahead up to 32K tokens (1.06–2.25× at 128-token blocks, 1.07–3.7× at 256), and at parity beyond (0.97–1.03×).
-- **In FastVideo**, on Wan 480P/720P-sized inputs: forward 2.1×, backward 1.7× over Triton.
-- Three findings carried most of the work: block size matters more than any tuning knob, 2-CTA MMA helps only when the two CTAs share K/V, and in the backward pass the dQ reduction, not the math, is the bottleneck.
-
 ## 1. What the kernels compute
 
 [VSA](https://arxiv.org/abs/2505.13389) (Zhang et al., 2025) replaces full attention in video diffusion transformers with two stages. A coarse stage attends over mean-pooled token blocks and keeps the top-k KV blocks for each query block. A fine stage then computes exact attention, but only over the selected blocks (Figure 1). The fine stage dominates the cost, and it is the part these kernels implement.
@@ -110,7 +102,7 @@ From 64K tokens on, the 128- and 256-token results are within the ±3% session s
 
 ## 4. In FastVideo
 
-With `FASTVIDEO_VSA_SM100A=1`, FastVideo routes the VSA fine stage to these kernels when the inputs are supported (bf16, head dim 128, 64- or 128-token blocks). Unsupported inputs fall back to Triton. Measured through `block_sparse_attn_from_indices` and `torch.autograd.grad`, with 40 heads and Wan-sized sequence lengths:
+The 64- and 128-token kernels are upstream in FastVideo: the forward in [#1719](https://github.com/hao-ai-lab/FastVideo/pull/1719), the backward in [#1819](https://github.com/hao-ai-lab/FastVideo/pull/1819) and [#1866](https://github.com/hao-ai-lab/FastVideo/pull/1866). With `FASTVIDEO_VSA_SM100A=1`, FastVideo routes the VSA fine stage to these kernels when the inputs are supported (bf16, head dim 128, 64- or 128-token blocks). Unsupported inputs fall back to Triton. Measured through `block_sparse_attn_from_indices` and `torch.autograd.grad`, with 40 heads and Wan-sized sequence lengths:
 
 | Pass | Shape (padded S, blocks, top-k) | Triton | This work | Speedup |
 | --- | --- | ---: | ---: | ---: |
@@ -124,7 +116,7 @@ The forward rows use 90% sparsity (top-k ≈ 10% of blocks); the backward rows u
 ## 5. Limitations and next steps
 
 - All numbers are from GB200. The kernels also build for GB300 (sm_103a, [#1833](https://github.com/hao-ai-lab/FastVideo/pull/1833)), but most of the tuning was done on GB200.
-- FastVideo routes only the 64- and 128-token kernels. The 256- and 512-token kernels live in strata-masonry; FastVideo's 256-token path uses FA4.
+- FastVideo routes only the 64- and 128-token kernels; its 256-token path uses FA4.
 - Past 32K tokens the backward is limited by the fp32 dQ reduction stream. A work order that keeps each query block's partials L2-resident is the next step.
 - Vera Rubin (sm_107a) support is planned.
 
