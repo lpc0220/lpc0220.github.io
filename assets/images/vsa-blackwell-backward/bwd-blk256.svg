@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="430" viewBox="0 0 1040 430" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="430" fill="#fcfcfb"/>
+<text x="30.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >1-CTA: two independent CTAs per KV block</text>
+<rect x="30" y="52" width="480" height="300" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<rect x="46" y="68" width="212" height="60" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="152.0" y="92.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >CTA 0 · KV rows 0–127</text>
+<text x="152.0" y="112.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >M = 128 MMAs</text>
+<rect x="274" y="68" width="212" height="60" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="380.0" y="92.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >CTA 1 · KV rows 128–255</text>
+<text x="380.0" y="112.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >M = 128 MMAs</text>
+<text x="48.0" y="160.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Both CTAs walk the same list of query tiles (128 rows each).</text>
+<text x="48.0" y="182.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Each loads every Q and dO tile in full.</text>
+<text x="48.0" y="204.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Each CTA's dQ partial sums over its own 128 keys:</text>
+<text x="48.0" y="226.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >two 64 KB fp32 reduce-adds per query tile.</text>
+<line x1="270.0" y1="280" x2="270.0" y2="300" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="140" y="302" width="260" height="40" rx="4" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="270.0" y="327.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >fp32 dQ accumulator</text>
+<text x="530.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >2-CTA pair: one KV block, M = 256 MMAs</text>
+<rect x="530" y="52" width="480" height="300" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<rect x="546" y="68" width="448" height="60" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<line x1="770.0" y1="72" x2="770.0" y2="100" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="658.0" y="92.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >CTA 0 · KV rows 0–127</text>
+<text x="882.0" y="92.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >CTA 1 · KV rows 128–255</text>
+<text x="770.0" y="116.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >joint M = 256 MMAs over the whole KV block</text>
+<text x="548.0" y="160.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Each CTA loads half of each Q and dO tile (in both layouts).</text>
+<text x="548.0" y="182.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >The CTAs exchange their dS halves through distributed SMEM.</text>
+<text x="548.0" y="204.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >dQ = dS · K contracts all 256 keys in one cluster MMA;</text>
+<text x="548.0" y="226.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >each CTA pushes its own 64 query rows: one reduce-add</text>
+<text x="548.0" y="248.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >per query tile, in two disjoint 32 KB halves.</text>
+<line x1="770.0" y1="280" x2="770.0" y2="300" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="640" y="302" width="260" height="40" rx="4" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="770.0" y="327.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >fp32 dQ accumulator</text>
+<text x="30.0" y="384.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >The pair halves the dQ reduce-add traffic per FLOP; Q and dO bytes per CTA stay the same.</text>
+<text x="30.0" y="404.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Measured: 5–13% faster than the 1-CTA form from 4K to 512K tokens, the largest gain at 512K.</text>
+</svg>

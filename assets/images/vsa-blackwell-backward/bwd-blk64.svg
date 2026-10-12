@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="470" viewBox="0 0 1040 470" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="470" fill="#fcfcfb"/>
+<text x="30.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >1 · List walked in quads</text>
+<text x="330.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >2 · Ring: 4 slots × 32 KB</text>
+<text x="650.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >3 · TMEM: Sᵀ of one quad (64 KV × 256 query)</text>
+<text x="30.0" y="70.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >KV block j · 64 rows · list:</text>
+<rect x="30" y="80" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="50.0" y="98.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >8</text>
+<rect x="74" y="80" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="94.0" y="98.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >11</text>
+<rect x="118" y="80" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="138.0" y="98.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >20</text>
+<rect x="162" y="80" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="182.0" y="98.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >3</text>
+<rect x="206" y="80" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="226.0" y="98.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >7</text>
+<rect x="250" y="80" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="270.0" y="98.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >15</text>
+<text x="30.0" y="134.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >quad 0</text>
+<rect x="30" y="140" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="50.0" y="158.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >8</text>
+<text x="50.0" y="182.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b0</text>
+<rect x="74" y="140" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="94.0" y="158.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >11</text>
+<text x="94.0" y="182.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b1</text>
+<rect x="118" y="140" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="138.0" y="158.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >20</text>
+<text x="138.0" y="182.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b2</text>
+<rect x="162" y="140" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="182.0" y="158.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >3</text>
+<text x="182.0" y="182.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b3</text>
+<text x="30.0" y="208.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >quad 1</text>
+<rect x="30" y="214" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="50.0" y="232.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >7</text>
+<text x="50.0" y="256.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b0</text>
+<rect x="74" y="214" width="40" height="28" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/><text x="94.0" y="232.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >15</text>
+<text x="94.0" y="256.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b1</text>
+<rect x="118" y="214" width="40" height="28" rx="3" fill="#ffffff" stroke="#8a8984" stroke-width="1.2" stroke-dasharray="4 3"/><text x="138.0" y="232.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >15</text>
+<text x="138.0" y="256.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b2</text>
+<rect x="162" y="214" width="40" height="28" rx="3" fill="#ffffff" stroke="#8a8984" stroke-width="1.2" stroke-dasharray="4 3"/><text x="182.0" y="232.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="400" >15</text>
+<text x="182.0" y="256.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >b3</text>
+<text x="30.0" y="300.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >dashed = pad (repeats the last block);</text>
+<text x="30.0" y="316.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >the compute warps set P = dS = 0 there</text>
+<rect x="330" y="62" width="230" height="48" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="346.0" y="83.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >s0 · dOᵀ, b0 b1</text>
+<text x="346.0" y="100.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >freed by dV</text>
+<rect x="330" y="120" width="230" height="48" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="346.0" y="141.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >s1 · dOᵀ, b2 b3</text>
+<text x="346.0" y="158.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >freed by dV</text>
+<rect x="330" y="178" width="230" height="48" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="346.0" y="199.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >s2 · Qᵀ, b0 b1</text>
+<text x="346.0" y="216.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >freed by dK</text>
+<rect x="330" y="236" width="230" height="48" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="346.0" y="257.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" >s3 · Qᵀ, b2 b3</text>
+<text x="346.0" y="274.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >freed by dK</text>
+<text x="330.0" y="314.0" font-size="11" fill="#8a8984" text-anchor="start" font-weight="400" >K and V: loaded once per CTA.</text>
+<rect x="650" y="62" width="360" height="160" rx="3" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<line x1="650" y1="142.0" x2="1010" y2="142.0" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="830.0" y1="62" x2="830.0" y2="222" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="654.0" y="66.0" width="172.0" height="72.0" rx="3" fill="#d6f1e6"/>
+<text x="740.0" y="100.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >query block b0</text>
+<text x="740.0" y="118.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 KV × 64 query</text>
+<rect x="834.0" y="66.0" width="172.0" height="72.0" rx="3" fill="#e7e4fa"/>
+<text x="920.0" y="100.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >query block b2</text>
+<text x="920.0" y="118.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 KV × 64 query</text>
+<rect x="654.0" y="146.0" width="172.0" height="72.0" rx="3" fill="#d6f1e6"/>
+<text x="740.0" y="180.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >query block b1</text>
+<text x="740.0" y="198.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 KV × 64 query</text>
+<rect x="834.0" y="146.0" width="172.0" height="72.0" rx="3" fill="#e7e4fa"/>
+<text x="920.0" y="180.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >query block b3</text>
+<text x="920.0" y="198.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >64 KV × 64 query</text>
+<text x="642.0" y="106.0" font-size="11" fill="#52514e" text-anchor="end" font-weight="400" >lanes 0–63</text>
+<text x="642.0" y="186.0" font-size="11" fill="#52514e" text-anchor="end" font-weight="400" >64–127</text>
+<text x="740.0" y="240.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >cols 0–63</text>
+<text x="920.0" y="240.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >cols 64–127</text>
+<text x="650.0" y="268.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >dV and dK use the same lane split: lanes 0–63</text>
+<text x="650.0" y="286.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >sum over b0, b2, lanes 64–127 over b1, b3;</text>
+<text x="650.0" y="304.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >the two partials are added at the end.</text>
+<text x="30.0" y="372.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Each 128-lane tcgen05.mma.ws (Layout E) computes two independent 64-row products, so a 64-row KV block still uses the full tensor core.</text>
+<text x="30.0" y="392.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Sᵀ and dPᵀ are issued as two N=128 MMAs, one per Qᵀ or dOᵀ slot; dV and dK accumulate over slot s0 then s1 (s2 then s3).</text>
+<text x="30.0" y="412.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >dQ = dS · K runs as two plain 128-row MMAs per quad (b0 and b2, then b1 and b3); each dQ tile goes to the fp32 accumulator.</text>
+<text x="30.0" y="432.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >The loader fills the next quad's dOᵀ slots first: dV frees them before dK frees the Qᵀ slots.</text>
+</svg>

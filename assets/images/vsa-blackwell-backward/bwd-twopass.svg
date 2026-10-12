@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="400" viewBox="0 0 1040 400" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="400" fill="#fcfcfb"/>
+<text x="30.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >One pass (64-token blocks, from 256K tokens)</text>
+<rect x="30" y="52" width="210" height="76" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="135.0" y="74.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Main · CTA per KV block</text>
+<text x="135.0" y="92.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >dK, dV in TMEM</text>
+<text x="135.0" y="108.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >dQ partial per pair</text>
+<line x1="240" y1="90" x2="318" y2="90" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="279.0" y="80.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >32 KB fp32</text>
+<rect x="320" y="52" width="230" height="76" rx="4" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="435.0" y="74.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >fp32 dQ accumulator</text>
+<text x="435.0" y="92.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >reduce-add per pair:</text>
+<text x="435.0" y="108.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >read-modify-write in L2</text>
+<line x1="550" y1="90" x2="618" y2="90" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="620" y="52" width="180" height="76" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="710.0" y="74.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Postprocess</text>
+<text x="710.0" y="92.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >× scale, bf16 dQ</text>
+<text x="30.0" y="172.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >Two passes (64-token blocks, up to 128K tokens)</text>
+<rect x="30" y="188" width="210" height="76" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="135.0" y="210.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Pass 1 · CTA per KV block</text>
+<text x="135.0" y="228.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >dK, dV in TMEM</text>
+<text x="135.0" y="244.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >store each dSᵀ tile</text>
+<line x1="240" y1="226" x2="318" y2="226" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="279.0" y="216.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8 KB bf16</text>
+<rect x="320" y="188" width="230" height="76" rx="4" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="435.0" y="210.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >dS buffer (global)</text>
+<text x="435.0" y="228.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >one 64 × 64 tile per pair,</text>
+<text x="435.0" y="244.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >at (query block, list position)</text>
+<line x1="550" y1="226" x2="618" y2="226" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="584.0" y="216.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8 KB dS</text>
+<text x="584.0" y="244.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >16 KB K</text>
+<rect x="620" y="188" width="210" height="76" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="725.0" y="210.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Pass 2 · CTA per query block</text>
+<text x="725.0" y="228.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >walks its own top-k list</text>
+<text x="725.0" y="244.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >dQ += dS · K in TMEM</text>
+<line x1="830" y1="226" x2="878" y2="226" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="880" y="188" width="130" height="76" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="945.0" y="210.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >bf16 dQ</text>
+<text x="945.0" y="228.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >stored once</text>
+<text x="30.0" y="312.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Pass 2 needs no recomputation (dS is stored) and no read-modify-write: each query block sums its own dQ in TMEM.</text>
+<text x="30.0" y="332.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >The cost is the dS buffer: B · H · blocks · top-k · 8 KB, 68.7 GB at 128K tokens with 8 heads. At long sequences it is filled</text>
+<text x="30.0" y="352.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >and consumed one head at a time; past 128K the per-head data no longer fits in L2 and one pass is faster.</text>
+</svg>

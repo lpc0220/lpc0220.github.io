@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="590" viewBox="0 0 1040 590" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect width="1040" height="590" fill="#fcfcfb"/>
+<text x="30.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >1 · Shared memory</text>
+<text x="250.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >2 · Five GEMMs per step</text>
+<text x="640.0" y="36.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >3 · TMEM (128 lanes × 512 columns)</text>
+<rect x="30" y="62" width="190" height="52" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="125.0" y="84.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >K · 128 KV rows</text>
+<text x="125.0" y="102.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >loaded once</text>
+<rect x="250" y="62" width="350" height="52" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="266.0" y="84.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >1 · Sᵀ = K · Qᵀ</text>
+<text x="266.0" y="102.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >→ cols 0–127</text>
+<rect x="30" y="124" width="190" height="52" rx="4" fill="#d6f1e6" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="125.0" y="146.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >V · 128 KV rows</text>
+<text x="125.0" y="164.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >loaded once</text>
+<rect x="250" y="124" width="350" height="52" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="266.0" y="146.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >2 · dPᵀ = V · dOᵀ</text>
+<text x="266.0" y="164.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >→ cols 256–383</text>
+<rect x="30" y="186" width="190" height="52" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="125.0" y="208.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Q · 128 query rows</text>
+<text x="125.0" y="226.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >2 stages, one block per step</text>
+<rect x="250" y="186" width="350" height="52" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="266.0" y="208.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >3 · dV += Pᵀ · dO</text>
+<text x="266.0" y="226.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >Pᵀ read from TMEM → cols 128–255</text>
+<rect x="30" y="248" width="190" height="52" rx="4" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="125.0" y="270.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >dO · 128 query rows</text>
+<text x="125.0" y="288.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >1 stage</text>
+<rect x="250" y="248" width="350" height="52" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="266.0" y="270.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >4 · dQ = dS · K</text>
+<text x="266.0" y="288.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >dS read from SMEM → cols 256–383</text>
+<rect x="30" y="310" width="190" height="52" rx="4" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="125.0" y="332.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600" >dS (bf16)</text>
+<text x="125.0" y="350.0" font-size="11" fill="#52514e" text-anchor="middle" font-weight="400" >written by the compute warps</text>
+<rect x="250" y="310" width="350" height="52" rx="4" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="266.0" y="332.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >5 · dK += dSᵀ · Q</text>
+<text x="266.0" y="350.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >dSᵀ read from TMEM → cols 384–511</text>
+<rect x="640" y="62" width="370" height="70" rx="3" fill="#dbe8f9" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="656.0" y="92.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >cols 0–127</text>
+<text x="656.0" y="112.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >Sᵀ, then Pᵀ (bf16) written over it</text>
+<rect x="640" y="140" width="370" height="70" rx="3" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="656.0" y="170.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >cols 128–255</text>
+<text x="656.0" y="190.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >dV accumulator, kept for the whole list</text>
+<rect x="640" y="218" width="370" height="70" rx="3" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="656.0" y="248.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >cols 256–383</text>
+<text x="656.0" y="268.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >dPᵀ, then dSᵀ (bf16), then the step's dQ tile</text>
+<rect x="640" y="296" width="370" height="70" rx="3" fill="#e7e4fa" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="656.0" y="326.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >cols 384–511</text>
+<text x="656.0" y="346.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >dK accumulator, kept for the whole list</text>
+<rect x="30" y="392" width="400" height="92" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="46.0" y="416.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >8 compute warps</text>
+<text x="46.0" y="438.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >Pᵀ = exp2(Sᵀ · scale − LSE)</text>
+<text x="46.0" y="456.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >dSᵀ = Pᵀ ∘ (dPᵀ − Δ)</text>
+<text x="46.0" y="474.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >write dSᵀ to TMEM (GEMM 5) and dS to SMEM (GEMM 4)</text>
+<rect x="460" y="392" width="300" height="92" rx="6" fill="#ffffff" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="476.0" y="416.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >4 dQ warps</text>
+<text x="476.0" y="438.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >read the dQ tile out of TMEM</text>
+<text x="476.0" y="456.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >4 chunks × 16 KB, 2 SMEM buffers</text>
+<text x="476.0" y="474.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="400" >fp32 bulk reduce-add per chunk</text>
+<line x1="760" y1="438" x2="798" y2="438" stroke="#52514e" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="800" y="392" width="210" height="92" rx="4" fill="#fbe3d8" stroke="#d6d5d0" stroke-width="1.2"/>
+<text x="905.0" y="426.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600" >Global memory</text>
+<text x="905.0" y="446.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >fp32 dQ accumulator,</text>
+<text x="905.0" y="464.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="400" >summed over KV blocks</text>
+<text x="30.0" y="528.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >Issue order for step j: Sᵀ(j+1) → dK(j) → dQ(j) → dPᵀ(j+1) → dV(j+1). The compute warps start step j+1 while the tensor core finishes step j.</text>
+<text x="30.0" y="548.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >dPᵀ(j+1) waits until the dQ warps have read dQ(j) out of cols 256–383. dK(j) reads dSᵀ there before dQ(j) overwrites it: MMAs run in issue order.</text>
+<text x="30.0" y="568.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400" >K and V stay in shared memory and dK and dV in TMEM for the whole list; only dQ leaves the SM every step.</text>
+</svg>

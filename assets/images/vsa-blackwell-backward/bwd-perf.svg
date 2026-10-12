@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1122" height="372" viewBox="0 0 1122 372" font-family="Inter, 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif">
+<rect width="1122" height="372" fill="#fcfcfb"/>
+<line x1="58" y1="22" x2="80" y2="22" stroke="#2a78d6" stroke-width="2.5"/>
+<circle cx="69" cy="22" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="86.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >This work</text>
+<line x1="184" y1="22" x2="206" y2="22" stroke="#eb6834" stroke-width="2.5"/>
+<circle cx="195" cy="22" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<text x="212.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >FastVideo Triton</text>
+<line x1="366" y1="22" x2="388" y2="22" stroke="#eda100" stroke-width="2.5"/>
+<circle cx="377" cy="22" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"/>
+<text x="394.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >FA4</text>
+<text x="1110.0" y="26.0" font-size="12" fill="#8a8984" text-anchor="end" font-weight="400" >GB200 · H=8, D=128, 25% density</text>
+<text x="58.0" y="52.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >64-token blocks</text>
+<line x1="58" y1="314.0" x2="312" y2="314.0" stroke="#d6d5d0" stroke-width="1"/>
+<text x="50.0" y="318.0" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >0</text>
+<line x1="58" y1="251.5" x2="312" y2="251.5" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="255.5" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >400</text>
+<line x1="58" y1="189.0" x2="312" y2="189.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="193.0" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >800</text>
+<line x1="58" y1="126.5" x2="312" y2="126.5" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="130.5" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >1,200</text>
+<line x1="58" y1="64.0" x2="312" y2="64.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="50.0" y="68.0" font-size="11" fill="#8a8984" text-anchor="end" font-weight="400" >1,600</text>
+<text x="66.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >4K</text>
+<text x="100.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8K</text>
+<text x="134.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >16K</text>
+<text x="168.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >32K</text>
+<text x="202.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >64K</text>
+<text x="236.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >128K</text>
+<text x="270.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >256K</text>
+<text x="304.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >512K</text>
+<polyline points="66.0,241.3 100.0,206.5 134.0,179.6 168.0,170.6 202.0,180.1 236.0,186.5 270.0,194.2 304.0,196.0" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="66.0" cy="241.3" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=4K: 465 TFLOPS</title></circle>
+<circle cx="100.0" cy="206.5" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=8K: 688 TFLOPS</title></circle>
+<circle cx="134.0" cy="179.6" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=16K: 860 TFLOPS</title></circle>
+<circle cx="168.0" cy="170.6" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=32K: 918 TFLOPS</title></circle>
+<circle cx="202.0" cy="180.1" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=64K: 857 TFLOPS</title></circle>
+<circle cx="236.0" cy="186.5" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=128K: 816 TFLOPS</title></circle>
+<circle cx="270.0" cy="194.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=256K: 767 TFLOPS</title></circle>
+<circle cx="304.0" cy="196.0" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=512K: 755 TFLOPS</title></circle>
+<polyline points="66.0,283.1 100.0,265.1 134.0,253.2 168.0,246.3 202.0,244.0 236.0,243.4 270.0,243.4 304.0,245.7" fill="none" stroke="#eb6834" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="66.0" cy="283.1" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=4K: 198 TFLOPS</title></circle>
+<circle cx="100.0" cy="265.1" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=8K: 313 TFLOPS</title></circle>
+<circle cx="134.0" cy="253.2" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=16K: 389 TFLOPS</title></circle>
+<circle cx="168.0" cy="246.3" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=32K: 433 TFLOPS</title></circle>
+<circle cx="202.0" cy="244.0" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=64K: 448 TFLOPS</title></circle>
+<circle cx="236.0" cy="243.4" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=128K: 452 TFLOPS</title></circle>
+<circle cx="270.0" cy="243.4" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=256K: 452 TFLOPS</title></circle>
+<circle cx="304.0" cy="245.7" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"><title>FastVideo Triton @ S=512K: 437 TFLOPS</title></circle>
+<text x="314.0" y="195.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >This work</text>
+<text x="314.0" y="208.0" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >755</text>
+<text x="314.0" y="244.7" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >Triton</text>
+<text x="314.0" y="257.7" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >437</text>
+<text x="420.0" y="52.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >128-token blocks</text>
+<line x1="420" y1="314.0" x2="674" y2="314.0" stroke="#d6d5d0" stroke-width="1"/>
+<line x1="420" y1="251.5" x2="674" y2="251.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="420" y1="189.0" x2="674" y2="189.0" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="420" y1="126.5" x2="674" y2="126.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="420" y1="64.0" x2="674" y2="64.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="428.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >4K</text>
+<text x="462.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8K</text>
+<text x="496.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >16K</text>
+<text x="530.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >32K</text>
+<text x="564.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >64K</text>
+<text x="598.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >128K</text>
+<text x="632.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >256K</text>
+<text x="666.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >512K</text>
+<polyline points="428.0,220.6 462.0,174.5 496.0,137.0 530.0,105.9 564.0,129.2 598.0,149.2 632.0,169.8 666.0,181.2" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="428.0" cy="220.6" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=4K: 598 TFLOPS</title></circle>
+<circle cx="462.0" cy="174.5" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=8K: 893 TFLOPS</title></circle>
+<circle cx="496.0" cy="137.0" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=16K: 1,133 TFLOPS</title></circle>
+<circle cx="530.0" cy="105.9" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=32K: 1,332 TFLOPS</title></circle>
+<circle cx="564.0" cy="129.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=64K: 1,183 TFLOPS</title></circle>
+<circle cx="598.0" cy="149.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=128K: 1,055 TFLOPS</title></circle>
+<circle cx="632.0" cy="169.8" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=256K: 923 TFLOPS</title></circle>
+<circle cx="666.0" cy="181.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=512K: 850 TFLOPS</title></circle>
+<polyline points="428.0,272.4 462.0,219.0 496.0,157.9 530.0,117.1 564.0,133.5 598.0,153.8 632.0,174.6 666.0,184.6" fill="none" stroke="#eda100" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="428.0" cy="272.4" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=4K: 266 TFLOPS</title></circle>
+<circle cx="462.0" cy="219.0" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=8K: 608 TFLOPS</title></circle>
+<circle cx="496.0" cy="157.9" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=16K: 999 TFLOPS</title></circle>
+<circle cx="530.0" cy="117.1" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=32K: 1,260 TFLOPS</title></circle>
+<circle cx="564.0" cy="133.5" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=64K: 1,155 TFLOPS</title></circle>
+<circle cx="598.0" cy="153.8" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=128K: 1,025 TFLOPS</title></circle>
+<circle cx="632.0" cy="174.6" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=256K: 892 TFLOPS</title></circle>
+<circle cx="666.0" cy="184.6" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=512K: 828 TFLOPS</title></circle>
+<text x="676.0" y="180.2" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >This work</text>
+<text x="676.0" y="193.2" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >850</text>
+<text x="676.0" y="206.2" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >FA4</text>
+<text x="676.0" y="219.2" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >828</text>
+<text x="782.0" y="52.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >256-token blocks</text>
+<line x1="782" y1="314.0" x2="1036" y2="314.0" stroke="#d6d5d0" stroke-width="1"/>
+<line x1="782" y1="251.5" x2="1036" y2="251.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="782" y1="189.0" x2="1036" y2="189.0" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="782" y1="126.5" x2="1036" y2="126.5" stroke="#e6e5e1" stroke-width="1"/>
+<line x1="782" y1="64.0" x2="1036" y2="64.0" stroke="#e6e5e1" stroke-width="1"/>
+<text x="790.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >4K</text>
+<text x="824.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >8K</text>
+<text x="858.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >16K</text>
+<text x="892.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >32K</text>
+<text x="926.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >64K</text>
+<text x="960.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >128K</text>
+<text x="994.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >256K</text>
+<text x="1028.0" y="332.0" font-size="10.5" fill="#8a8984" text-anchor="middle" font-weight="400" >512K</text>
+<polyline points="790.0,214.2 824.0,165.2 858.0,123.1 892.0,91.8 926.0,115.2 960.0,129.6 994.0,144.6 1028.0,152.3" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="790.0" cy="214.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=4K: 639 TFLOPS</title></circle>
+<circle cx="824.0" cy="165.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=8K: 952 TFLOPS</title></circle>
+<circle cx="858.0" cy="123.1" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=16K: 1,222 TFLOPS</title></circle>
+<circle cx="892.0" cy="91.8" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=32K: 1,422 TFLOPS</title></circle>
+<circle cx="926.0" cy="115.2" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=64K: 1,272 TFLOPS</title></circle>
+<circle cx="960.0" cy="129.6" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=128K: 1,180 TFLOPS</title></circle>
+<circle cx="994.0" cy="144.6" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=256K: 1,084 TFLOPS</title></circle>
+<circle cx="1028.0" cy="152.3" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"><title>This work @ S=512K: 1,035 TFLOPS</title></circle>
+<polyline points="790.0,287.1 824.0,235.2 858.0,164.9 892.0,105.9 926.0,114.3 960.0,123.5 994.0,141.5 1028.0,148.8" fill="none" stroke="#eda100" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="790.0" cy="287.1" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=4K: 172 TFLOPS</title></circle>
+<circle cx="824.0" cy="235.2" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=8K: 504 TFLOPS</title></circle>
+<circle cx="858.0" cy="164.9" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=16K: 954 TFLOPS</title></circle>
+<circle cx="892.0" cy="105.9" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=32K: 1,332 TFLOPS</title></circle>
+<circle cx="926.0" cy="114.3" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=64K: 1,278 TFLOPS</title></circle>
+<circle cx="960.0" cy="123.5" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=128K: 1,219 TFLOPS</title></circle>
+<circle cx="994.0" cy="141.5" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=256K: 1,104 TFLOPS</title></circle>
+<circle cx="1028.0" cy="148.8" r="4" fill="#eda100" stroke="#fcfcfb" stroke-width="2"><title>FA4 @ S=512K: 1,057 TFLOPS</title></circle>
+<text x="1038.0" y="173.8" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >This work</text>
+<text x="1038.0" y="186.8" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,035</text>
+<text x="1038.0" y="147.8" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >FA4</text>
+<text x="1038.0" y="160.8" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,057</text>
+<text x="14.0" y="189.0" font-size="11" fill="#8a8984" text-anchor="middle" font-weight="400" transform="rotate(-90 14 189.0)">TFLOPS</text>
+<text x="570.0" y="360.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="400" >Sequence length S (tokens)</text>
+</svg>
