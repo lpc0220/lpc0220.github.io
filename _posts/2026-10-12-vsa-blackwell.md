@@ -93,7 +93,7 @@ KV blocks per step count one M-tile. Small blocks lose reuse because the two M-t
 
 ## 3. Performance improvement
 
-All kernel-level results use one setup:
+We benchmark and evaluate our kernels based on the following setup:
 
 | Component | Setup |
 | --- | --- |
@@ -119,6 +119,12 @@ The baselines are our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 1
 | 256 | FA4 | 4.13× | 2.17× | 1.33× | 1.16× | 1.07× | 1.04× |
 
 The largest gains are at short sequences, where fixed per-launch and per-tile overheads dominate the baselines.
+
+## 4. What's next
+
+- **Low-precision VSA.** The kernels are compute-bound, and Blackwell's tensor cores run FP8 at twice and FP4 at four times the BF16 rate. We are working on FP8 and NVFP4 versions of the VSA kernels, starting with the two GEMMs per step.
+- **VSA on Vera Rubin.** The same design carries over to Vera Rubin (sm_107a). Its larger shared memory allows deeper K/V rings, and we will retune the block-size variants for it.
+- **GB300.** The kernels already build for GB300 (sm_103a), but they were tuned on GB200. Next is tuning for GB300 and using its sm_103a-only instructions.
 
 ## Acknowledgements
 
