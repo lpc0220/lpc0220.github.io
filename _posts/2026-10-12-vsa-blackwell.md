@@ -156,4 +156,4 @@ The forward rows use 90% sparsity (top-k ≈ 10% of blocks); the backward rows u
 
 ## Acknowledgements
 
-Thanks to the FastVideo maintainers for reviewing and merging the kernels, and to the FlashAttention-4 authors, whose design both kernels follow.
+Thanks to the FastVideo maintainers for reviewing and merging the kernels.
