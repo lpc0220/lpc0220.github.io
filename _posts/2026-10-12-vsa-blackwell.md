@@ -8,13 +8,13 @@ description: "Blackwell (sm_100a) CUDA kernels for the fine stage of Video Spars
 
 ## 1. What the kernels compute
 
-[VSA](https://arxiv.org/abs/2505.13389) (Zhang et al., 2025) replaces full attention in video diffusion transformers with two stages. A coarse stage attends over mean-pooled token blocks and keeps the top-k KV blocks for each query block. A fine stage then computes exact attention, but only over the selected blocks (Figure 1). The fine stage dominates the cost, and it is the part these kernels implement.
+Our [VSA paper](https://arxiv.org/abs/2505.13389) replaces full attention in video diffusion transformers with two stages. A coarse stage attends over mean-pooled token blocks and keeps the top-k KV blocks for each query block. A fine stage then computes exact attention, but only over the selected blocks (Figure 1). The fine stage dominates the cost, and it is the part these kernels implement.
 
 ![VSA fine stage as a block-sparse mask](/assets/images/vsa-blackwell/vsa-fine-stage.svg)
 
 *Figure 1. The fine stage is block-sparse attention: each query block attends to its own top-k KV blocks.*
 
-The problem differs from dense attention in two ways. Every query block has its **own** KV list, so K/V must be gathered rather than streamed. And the block size is set by the model (FastVideo's default is a 4×4×4 = 64-token video cube), and 64 rows is half the height of a Blackwell tensor-core tile.
+The problem differs from dense attention in two ways. Every query block has its **own** KV list, so K/V must be gathered rather than streamed. And the block size is set by the model (our default is a 4×4×4 = 64-token video cube), and 64 rows is half the height of a Blackwell tensor-core tile.
 
 ## 2. Kernel design
 
@@ -91,7 +91,7 @@ At a fixed sequence length and density, every block size does the same number of
 
 ### 3.1 Kernel throughput
 
-The baselines are FastVideo's Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (FastVideo's VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
+The baselines are our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (our VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
 
 ![TFLOPS vs sequence length](/assets/images/vsa-blackwell/fwd-perf.svg)
 
@@ -108,7 +108,7 @@ The largest gains are at short sequences, where fixed per-launch and per-tile ov
 
 ### 3.2 In FastVideo
 
-The 64- and 128-token kernels are upstream in FastVideo ([#1719](https://github.com/hao-ai-lab/FastVideo/pull/1719)). With `FASTVIDEO_VSA_SM100A=1`, FastVideo routes the VSA fine stage to these kernels when the inputs are supported (bf16, head dim 128, 64- or 128-token blocks). Unsupported inputs fall back to Triton. Measured through `block_sparse_attn_from_indices`, with 40 heads and Wan-sized sequence lengths:
+The 64- and 128-token kernels ship in FastVideo ([#1719](https://github.com/hao-ai-lab/FastVideo/pull/1719)). With `FASTVIDEO_VSA_SM100A=1`, FastVideo routes the VSA fine stage to these kernels when the inputs are supported (bf16, head dim 128, 64- or 128-token blocks). Unsupported inputs fall back to Triton. Measured through `block_sparse_attn_from_indices`, with 40 heads and Wan-sized sequence lengths:
 
 | Shape (padded S, blocks, top-k) | Triton | This work | Speedup |
 | --- | ---: | ---: | ---: |
@@ -116,7 +116,3 @@ The 64- and 128-token kernels are upstream in FastVideo ([#1719](https://github.
 | 720P: 92,160, 1,440, 144 | 33.36 ms | 16.26 ms | 2.05× |
 
 Both rows use 90% sparsity (top-k ≈ 10% of blocks).
-
-## Acknowledgements
-
-Thanks to the FastVideo maintainers for reviewing and merging the kernels.
