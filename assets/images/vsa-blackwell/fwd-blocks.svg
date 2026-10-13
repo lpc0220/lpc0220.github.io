@@ -11,7 +11,7 @@
 <text x="330.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >256-token</text>
 <line x1="428" y1="22" x2="450" y2="22" stroke="#12396e" stroke-width="2.5"/>
 <circle cx="439" cy="22" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"/>
-<text x="456.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >512-token (2-CTA)</text>
+<text x="456.0" y="26.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400" >512-token</text>
 <text x="878.0" y="26.0" font-size="12" fill="#8a8984" text-anchor="end" font-weight="400" >GB200 · H=8, D=128, 25% density</text>
 <text x="58.0" y="52.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600" >Our kernels by block size</text>
 <line x1="58" y1="314.0" x2="804" y2="314.0" stroke="#d6d5d0" stroke-width="1"/>
@@ -56,12 +56,12 @@
 <circle cx="650.0" cy="98.4" r="4" fill="#2161b8" stroke="#fcfcfb" stroke-width="2"><title>256-token @ S=64K: 1,635 TFLOPS</title></circle>
 <circle cx="796.0" cy="138.0" r="4" fill="#2161b8" stroke="#fcfcfb" stroke-width="2"><title>256-token @ S=128K: 1,445 TFLOPS</title></circle>
 <polyline points="66.0,249.4 212.0,176.3 358.0,166.9 504.0,109.0 650.0,102.3 796.0,117.1" fill="none" stroke="#12396e" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
-<circle cx="66.0" cy="249.4" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token (2-CTA) @ S=4K: 910 TFLOPS</title></circle>
-<circle cx="212.0" cy="176.3" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token (2-CTA) @ S=8K: 1,261 TFLOPS</title></circle>
-<circle cx="358.0" cy="166.9" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token (2-CTA) @ S=16K: 1,306 TFLOPS</title></circle>
-<circle cx="504.0" cy="109.0" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token (2-CTA) @ S=32K: 1,584 TFLOPS</title></circle>
-<circle cx="650.0" cy="102.3" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token (2-CTA) @ S=64K: 1,616 TFLOPS</title></circle>
-<circle cx="796.0" cy="117.1" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token (2-CTA) @ S=128K: 1,545 TFLOPS</title></circle>
+<circle cx="66.0" cy="249.4" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token @ S=4K: 910 TFLOPS</title></circle>
+<circle cx="212.0" cy="176.3" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token @ S=8K: 1,261 TFLOPS</title></circle>
+<circle cx="358.0" cy="166.9" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token @ S=16K: 1,306 TFLOPS</title></circle>
+<circle cx="504.0" cy="109.0" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token @ S=32K: 1,584 TFLOPS</title></circle>
+<circle cx="650.0" cy="102.3" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token @ S=64K: 1,616 TFLOPS</title></circle>
+<circle cx="796.0" cy="117.1" r="4" fill="#12396e" stroke="#fcfcfb" stroke-width="2"><title>512-token @ S=128K: 1,545 TFLOPS</title></circle>
 <text x="806.0" y="210.7" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >64-token</text>
 <text x="806.0" y="223.7" font-size="11" fill="#52514e" text-anchor="start" font-weight="400" >1,091</text>
 <text x="806.0" y="168.1" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="600" >128-token</text>

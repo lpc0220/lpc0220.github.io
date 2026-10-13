@@ -101,7 +101,7 @@ We benchmark and evaluate our kernels based on the following setup:
 | --- | --- |
 | GPU | NVIDIA GB200 (sm_100a), CUDA 13.0 |
 | Shape | B=1, H=8, head dim 128, bf16, non-causal MHA |
-| Block sizes | 64, 128 and 256 tokens (1-CTA kernels); 512 tokens (2-CTA kernel) |
+| Block sizes | 64, 128, 256 and 512 tokens |
 | Baselines | our Triton kernel and FlashInfer (64 tokens), FlashInfer (128), FA4 (256) |
 | Sparsity | 25% density (top-k = number of blocks / 4), random block selection shared across heads |
 | Inputs | identical saved tensors for every implementation |
@@ -134,7 +134,7 @@ Reading Figure 6 panel by panel:
 
 ### Block size
 
-Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 128 and 256 tokens and the 2-CTA kernel at 512 tokens. The FLOPs at each sequence length are the same for every block size, so a higher curve is a faster call.
+Figure 7 compares our own kernels across block sizes: 64, 128, 256 and 512 tokens. The FLOPs at each sequence length are the same for every block size, so a higher curve is a faster call.
 
 ![TFLOPS of our kernels by block size](/assets/images/vsa-blackwell/fwd-blocks.svg)
 
@@ -142,7 +142,7 @@ Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 1
 
 - **64 → 256 tokens:** +44% at 4K and +32% at 64K. From 256 tokens on, both M-tiles of a CTA belong to one query block and share one K/V stream (see the 256-token design above); at 64 and 128 tokens each M-tile loads its own K/V.
 - **128 tokens** sits in between: the same tiling as 256, but with separate K/V per M-tile.
-- **512 tokens (2-CTA)** is within 1.2% of 256 tokens up to 64K, and 7% faster at 128K, where it also drops the least from its 64K value (4%, against 6–12% for the others).
+- **512 tokens** is within 1.2% of 256 tokens up to 64K, and 7% faster at 128K, where it also drops the least from its 64K value (4%, against 6–12% for the others).
 
 In short: every block size does the same work, so the speedup from larger blocks comes from how the kernel feeds the tensor cores (shared K/V streams, fewer and longer gathers), not from skipping FLOPs.
 

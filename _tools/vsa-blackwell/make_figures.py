@@ -26,7 +26,7 @@ COLORS = {
     "64-token": "#6ea5e9",
     "128-token": "#3d86dc",
     "256-token": "#2161b8",
-    "512-token (2-CTA)": "#12396e",
+    "512-token": "#12396e",
 }
 
 BLOCKS = [
@@ -34,7 +34,7 @@ BLOCKS = [
         "64-token": [641, 924, 1106, 1199, 1236, 1091],
         "128-token": [837, 1158, 1212, 1468, 1431, 1341],
         "256-token": [921, 1250, 1309, 1586, 1635, 1445],
-        "512-token (2-CTA)": [910, 1261, 1306, 1584, 1616, 1545],
+        "512-token": [910, 1261, 1306, 1584, 1616, 1545],
     }),
 ]
 
@@ -133,7 +133,7 @@ def small_multiples(path, panels, xlabels, ymax, ystep, series_order, title_note
             ends.append((name, ymap(vals[-1]), vals[-1]))
         label_y = spread([e[1] for e in ends], 26)
         for (name, ey, ev), ly in zip(ends, label_y):
-            short = {"FastVideo Triton": "Triton", "512-token (2-CTA)": "512-token"}.get(name, name)
+            short = {"FastVideo Triton": "Triton"}.get(name, name)
             out.append(text(xs[-1] + 10, ly - 1, short, 11.5, INK, weight=600))
             out.append(text(xs[-1] + 10, ly + 12, f"{ev:,.0f}", 11, INK_2))
 
@@ -445,7 +445,7 @@ if __name__ == "__main__":
                     ["This work", "FastVideo Triton", "FlashInfer", "FA4"],
                     "GB200 · H=8, D=128, 25% density")
     small_multiples(os.path.join(OUT, "fwd-blocks.svg"), BLOCKS, FWD_S, 1800, 200,
-                    ["64-token", "128-token", "256-token", "512-token (2-CTA)"],
+                    ["64-token", "128-token", "256-token", "512-token"],
                     "GB200 · H=8, D=128, 25% density", panel_w=820, ymin=600)
     vsa_diagram(os.path.join(OUT, "vsa-fine-stage.svg"))
     blk128_diagram(os.path.join(OUT, "fwd-blk128.svg"))
