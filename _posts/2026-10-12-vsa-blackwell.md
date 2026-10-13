@@ -101,6 +101,8 @@ We benchmark and evaluate our kernels based on the following setup:
 | --- | --- |
 | GPU | NVIDIA GB200 (sm_100a), CUDA 13.0 |
 | Shape | B=1, H=8, head dim 128, bf16, non-causal MHA |
+| Block sizes | 64, 128 and 256 tokens (1-CTA kernels); 512 tokens (2-CTA kernel) |
+| Baselines | our Triton kernel and FlashInfer (64 tokens), FlashInfer (128), FA4 (256) |
 | Sparsity | 25% density (top-k = number of blocks / 4), random block selection shared across heads |
 | Inputs | identical saved tensors for every implementation |
 | Metric | TFLOPS over selected block pairs: 4·D·H·blocks·top-k·block² |
@@ -109,12 +111,14 @@ The metric counts the two GEMMs of attention (Q·Kᵀ and P·V, 2 FLOPs per mult
 
 | Sequence length | 4K | 8K | 16K | 32K | 64K | 128K |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| KV blocks per head (64 / 128 / 256 tokens) | 64 / 32 / 16 | 128 / 64 / 32 | 256 / 128 / 64 | 512 / 256 / 128 | 1,024 / 512 / 256 | 2,048 / 1,024 / 512 |
-| Selected KV blocks per query block (top-k) | 16 / 8 / 4 | 32 / 16 / 8 | 64 / 32 / 16 | 128 / 64 / 32 | 256 / 128 / 64 | 512 / 256 / 128 |
+| KV blocks / top-k, 64-token blocks | 64 / 16 | 128 / 32 | 256 / 64 | 512 / 128 | 1,024 / 256 | 2,048 / 512 |
+| KV blocks / top-k, 128-token blocks | 32 / 8 | 64 / 16 | 128 / 32 | 256 / 64 | 512 / 128 | 1,024 / 256 |
+| KV blocks / top-k, 256-token blocks | 16 / 4 | 32 / 8 | 64 / 16 | 128 / 32 | 256 / 64 | 512 / 128 |
+| KV blocks / top-k, 512-token blocks | 8 / 2 | 16 / 4 | 32 / 8 | 64 / 16 | 128 / 32 | 256 / 64 |
 | Selected keys per query row | 1,024 | 2,048 | 4,096 | 8,192 | 16,384 | 32,768 |
 | Work per call | 17 GFLOP | 69 GFLOP | 275 GFLOP | 1.1 TFLOP | 4.4 TFLOP | 17.6 TFLOP |
 
-At 4K tokens a call takes our kernels 20–32 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 12–18 ms, and such fixed costs are negligible.
+KV blocks are counted per head; top-k is the number of KV blocks each query block selects. At 4K tokens a call takes our kernels 19–32 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 11–18 ms, and such fixed costs are negligible.
 
 ### Comparison with public kernels
 
