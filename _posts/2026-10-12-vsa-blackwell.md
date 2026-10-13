@@ -6,7 +6,7 @@ date: 2026-10-12
 description: "Blackwell (sm_100a) CUDA kernels for the fine stage of Video Sparse Attention: design and measured performance."
 ---
 
-## 1. Background: the VSA fine stage
+## Background: the VSA fine stage
 
 Our [VSA](https://arxiv.org/abs/2505.13389) replaces full attention in video diffusion transformers with two stages. A coarse stage attends over mean-pooled token blocks and keeps the top-k KV blocks for each query block. A fine stage then computes exact attention, but only over the selected blocks (Figure 1). The fine stage dominates the cost, and it is the part these kernels implement.
 
@@ -16,9 +16,9 @@ Our [VSA](https://arxiv.org/abs/2505.13389) replaces full attention in video dif
 
 The problem differs from dense attention in two ways. Every query block has its **own** KV list, so K/V must be gathered rather than streamed. And the block size is set by the model (our default is a 4×4×4 = 64-token video cube), and 64 rows is half the height of a Blackwell tensor-core tile.
 
-## 2. Design
+## Design
 
-### 2.1 Starting point: dense attention
+### Starting point: dense attention
 
 The kernel is our dense Blackwell attention kernel with only the sparse parts changed. Each CTA runs 16 specialized warps: a TMA load warp, a `tcgen05` MMA warp, eight softmax warps, four correction warps, an epilogue warp, and a scheduler warp that steals work with cluster launch control (CLC). Each CTA processes two 128-row M-tiles whose S and O accumulators fill the 512 tensor-memory (TMEM) columns.
 
@@ -26,7 +26,7 @@ The kernel is our dense Blackwell attention kernel with only the sparse parts ch
 
 Sparsity changes two things: the load warp gathers each selected KV block by its index instead of streaming a contiguous range, and the K loop visits only the selected blocks.
 
-### 2.2 128-token blocks: two query blocks per CTA, one KV block per step
+### 128-token blocks: two query blocks per CTA, one KV block per step
 
 A 128-token query block is exactly one 128-row M-tile, and a 128-token KV block is exactly one 128-key K/V tile, so the MMAs, TMEM layout and softmax are the dense kernel's (Figure 2). Each CTA takes two adjacent query blocks, one per M-tile, each with its own list. At each step, query block 2p computes S = Q·Kᵀ against the next block in its list: a 128 × 128 tile with one TMEM lane per row. Four softmax warps turn S into P, one thread per row, and write P back over S. P·V then accumulates into O. Query block 2p+1 does the same in its own TMEM columns. The MMA warp alternates between the two blocks, so one block's softmax overlaps the other's MMAs.
 
@@ -36,7 +36,7 @@ The one structural difference is K/V reuse. Dense attention loads each K/V tile 
 
 *Figure 2. 128-token blocks: each query block is one M-tile with its own list; S and O use the dense TMEM layout, but each M-tile needs its own K/V tiles.*
 
-### 2.3 64-token blocks: two query blocks per CTA, four KV blocks per step
+### 64-token blocks: two query blocks per CTA, four KV blocks per step
 
 128-row by 128-kv tokens utilizes full capability of tensor-core MMA. A 64-row query block fills only half of a 128-row MMA. Each CTA again takes two adjacent query blocks, each with its own list, and interleaves their K/V in one ring. TMEM is 128 lanes (rows) × 512 columns, and each query block gets 128 columns for its scores. Each step of the K loop gathers four selected KV blocks (256 keys), so the scores form a 64 × 256 tile, twice as wide as the 128 columns available. `tcgen05.mma.ws` (PTX data-path Layout E) stores it in two halves: scores for keys 0–127 go to lanes 0–63, and scores for keys 128–255 go to lanes 64–127 (Figure 3). Every lane is used, and each query row appears once in each half. Each softmax thread runs an online softmax over one half (128 keys), and the correction warps merge the two halves of each row.
 
@@ -44,7 +44,7 @@ The one structural difference is K/V reuse. Dense attention loads each K/V tile 
 
 *Figure 3. 64-token blocks: each query block gathers four KV blocks from its own list per step; its 64 × 256 score tile uses all 128 TMEM lanes, with keys 0–127 in lanes 0–63 and keys 128–255 in lanes 64–127.*
 
-### 2.4 256-token blocks: one query block per CTA, half a KV block per step
+### 256-token blocks: one query block per CTA, half a KV block per step
 
 The CTA's two M-tiles are the two halves of one query block, so they share one K/V stream (Figure 4).
 
@@ -58,7 +58,7 @@ The TMEM layout and softmax are the same as for 128-token blocks. Our first 256-
 
 *Figure 4. 256-token blocks: the CTA's two M-tiles are the two halves of one query block, so every 128-key K/V tile is loaded once and read by both.*
 
-### 2.5 512-token blocks: two CTAs per query block, a quarter KV block per step
+### 512-token blocks: two CTAs per query block, a quarter KV block per step
 
 Blackwell's `cta_group::2` MMA lets two CTAs compute one 256-row tile together. We use it for 512-token blocks only. At 128 and 256 tokens we built 2-CTA kernels too, and they were slower than 1-CTA.
 
@@ -78,7 +78,7 @@ Blackwell's `cta_group::2` MMA lets two CTAs compute one 256-row tile together. 
 
 *Figure 5. A 2-CTA cluster covers 512 query rows. Colors mark distinct top-k lists.*
 
-### 2.6 Summary
+### Summary
 
 Every kernel runs two 128-lane M-tiles per CTA and ping-pongs between them: while the softmax warps work on one tile, the MMA warp runs the other tile's MMAs. TMEM fits exactly two (2 × (128 S + 128 O) = 512 columns). The block size decides what fills the two tiles and whether they can share K/V:
 
@@ -91,9 +91,9 @@ Every kernel runs two 128-lane M-tiles per CTA and ping-pongs between them: whil
 
 KV blocks per step count one M-tile. Small blocks lose reuse because the two M-tiles hold different query blocks with different lists. From 256 tokens on, both tiles belong to one block and reuse matches dense attention, and the 512-token 2-CTA kernel doubles it.
 
-## 3. Results
+## Results
 
-### 3.1 Setup
+### Setup
 
 We benchmark and evaluate our kernels based on the following setup:
 
@@ -116,7 +116,7 @@ The metric counts the two GEMMs of attention (Q·Kᵀ and P·V, 2 FLOPs per mult
 
 At 4K tokens a call takes our kernels 20–32 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 12–18 ms, and such fixed costs are negligible.
 
-### 3.2 Comparison with public kernels
+### Comparison with public kernels
 
 Each of our kernels is compared with the strongest public kernel at the same block size: our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (our VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
 
@@ -143,9 +143,9 @@ The table gives the speedup of our kernel over each baseline: our TFLOPS divided
 
 The largest gains are at short sequences: 3.3–8.8× at 4K tokens. There, a call is 20–32 µs for our kernels but 82–278 µs for the baselines, and any cost that does not grow with the sequence weighs heavily. As sequences grow, the gap narrows, to 1.04–1.14× over FlashInfer and FA4 at 128K. Against Triton the gap stays large: 1.9× at 128K, where a call takes 17.5 ms with our kernel and 33.7 ms with Triton.
 
-### 3.3 Block size
+### Block size
 
-Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 128 and 256 tokens and the 2-CTA kernel at 512 tokens (Section 2.5). All four were measured in one session, separate from the baseline comparisons above, so absolute values differ somewhat from Figure 6. The FLOPs at each sequence length are the same for every block size, so a higher curve is a faster call.
+Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 128 and 256 tokens and the 2-CTA kernel at 512 tokens (see the 512-token design above). All four were measured in one session, separate from the baseline comparisons above, so absolute values differ somewhat from Figure 6. The FLOPs at each sequence length are the same for every block size, so a higher curve is a faster call.
 
 ![TFLOPS of our kernels by block size](/assets/images/vsa-blackwell/fwd-blocks.svg)
 
@@ -158,16 +158,17 @@ Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 1
 | 256 | 921 | 1,250 | 1,309 | 1,586 | 1,635 | 1,445 |
 | 512 (2-CTA) | 910 | 1,261 | 1,306 | 1,584 | 1,616 | 1,545 |
 
-- **64 → 256 tokens:** +44% at 4K and +32% at 64K. From 256 tokens on, both M-tiles of a CTA belong to one query block and share one K/V stream (Section 2.4); at 64 and 128 tokens each M-tile loads its own K/V.
+- **64 → 256 tokens:** +44% at 4K and +32% at 64K. From 256 tokens on, both M-tiles of a CTA belong to one query block and share one K/V stream (see the 256-token design above); at 64 and 128 tokens each M-tile loads its own K/V.
 - **128 tokens** sits in between: the same tiling as 256, but with separate K/V per M-tile.
 - **512 tokens (2-CTA)** is within 1.2% of 256 tokens up to 64K, and 7% faster at 128K, where it also drops the least from its 64K value (4%, against 6–12% for the others).
 
 In short: every block size does the same work, so the speedup from larger blocks comes from how the kernel feeds the tensor cores (shared K/V streams, fewer and longer gathers), not from skipping FLOPs.
 
-## 4. What's next
+## What's next
 
 - **Low-precision VSA.** The kernels are compute-bound, and Blackwell's tensor cores run FP8 at twice and FP4 at four times the BF16 rate. We are working on FP8 and NVFP4 versions of the VSA kernels, starting with the two GEMMs per step.
 - **VSA on Vera Rubin.** The same design carries over to Vera Rubin (sm_107a). Its larger shared memory allows deeper K/V rings, and we will retune the block-size variants for it.
+
 ## Acknowledgements
 
 This work was developed in close collaboration between the FastVideo team and Pengcheng Li at NVIDIA.
