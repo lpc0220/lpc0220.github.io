@@ -143,6 +143,7 @@ Figure 7 compares our own kernels across block sizes: 64, 128, 256 and 512 token
 - **64 → 256 tokens:** +44% at 4K and +32% at 64K. From 256 tokens on, both M-tiles of a CTA belong to one query block and share one K/V stream (see the 256-token design above); at 64 and 128 tokens each M-tile loads its own K/V.
 - **128 tokens** sits in between: the same tiling as 256, but with separate K/V per M-tile.
 - **512 tokens** is within 1.2% of 256 tokens up to 64K, and 7% faster at 128K, where it also drops the least from its 64K value (4%, against 6–12% for the others).
+
 ## What's next
 
 Next, we are working on low-precision (FP8 and NVFP4) versions of these kernels and on bringing them to Vera Rubin.
