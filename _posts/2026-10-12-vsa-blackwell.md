@@ -93,6 +93,8 @@ KV blocks per step count one M-tile. Small blocks lose reuse because the two M-t
 
 ## 3. Performance improvement
 
+### 3.1 Setup
+
 We benchmark and evaluate our kernels based on the following setup:
 
 | Component | Setup |
@@ -103,9 +105,20 @@ We benchmark and evaluate our kernels based on the following setup:
 | Inputs | identical saved tensors for every implementation |
 | Metric | TFLOPS over selected block pairs: 4·D·H·blocks·top-k·block² |
 
-The metric counts the two GEMMs of attention (Q·Kᵀ and P·V, 2 FLOPs per multiply-add) over the selected (query block, KV block) pairs only, so skipped blocks earn nothing. At a fixed sequence length and density, every block size does the same number of FLOPs, so the TFLOPS of different block sizes are directly comparable. Each kernel is compared with the strongest public kernel at the same block size.
+The metric counts the two GEMMs of attention (Q·Kᵀ and P·V, 2 FLOPs per multiply-add) over the selected (query block, KV block) pairs only, so skipped blocks earn nothing. At 25% density every query row attends to a quarter of the sequence, whatever the block size, so a call costs the same number of FLOPs at every block size and their TFLOPS are directly comparable. The sequence lengths span three orders of magnitude of work:
 
-The baselines are our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (our VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
+| Sequence length | 4K | 8K | 16K | 32K | 64K | 128K |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| KV blocks per head (64 / 128 / 256 tokens) | 64 / 32 / 16 | 128 / 64 / 32 | 256 / 128 / 64 | 512 / 256 / 128 | 1,024 / 512 / 256 | 2,048 / 1,024 / 512 |
+| Selected KV blocks per query block (top-k) | 16 / 8 / 4 | 32 / 16 / 8 | 64 / 32 / 16 | 128 / 64 / 32 | 256 / 128 / 64 | 512 / 256 / 128 |
+| Selected keys per query row | 1,024 | 2,048 | 4,096 | 8,192 | 16,384 | 32,768 |
+| Work per call | 17 GFLOP | 69 GFLOP | 275 GFLOP | 1.1 TFLOP | 4.4 TFLOP | 17.6 TFLOP |
+
+At 4K tokens a call takes our kernels 20–32 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 12–18 ms, and such fixed costs are negligible.
+
+### 3.2 Comparison with public kernels
+
+Each of our kernels is compared with the strongest public kernel at the same block size: our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (our VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
 
 ![TFLOPS vs sequence length](/assets/images/vsa-blackwell/fwd-perf.svg)
 
@@ -128,9 +141,11 @@ The table gives the speedup of our kernel over each baseline: our TFLOPS divided
 | 128 | FlashInfer | 4.21× | 2.09× | 1.26× | 1.18× | 1.13× | 1.09× |
 | 256 | FA4 | 4.13× | 2.17× | 1.33× | 1.16× | 1.07× | 1.04× |
 
-The largest gains are at short sequences, where fixed per-launch and per-tile overheads dominate the baselines: 3.3–8.8× at 4K tokens. As sequences grow, the baselines amortize that overhead and the gap narrows, to 1.04–1.14× over FlashInfer and FA4 at 128K. Against Triton the gap stays large: 1.9× at 128K.
+The largest gains are at short sequences: 3.3–8.8× at 4K tokens. There, a call is 20–32 µs for our kernels but 82–278 µs for the baselines, and any cost that does not grow with the sequence weighs heavily. As sequences grow, the gap narrows, to 1.04–1.14× over FlashInfer and FA4 at 128K. Against Triton the gap stays large: 1.9× at 128K, where a call takes 17.5 ms with our kernel and 33.7 ms with Triton.
 
-**Block size.** Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 128 and 256 tokens and the 2-CTA kernel at 512 tokens (Section 2.5). All four were measured in one session, separate from the baseline comparisons above, so absolute values differ somewhat from Figure 6. The FLOPs at each sequence length are the same for every block size.
+### 3.3 Block size
+
+Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 128 and 256 tokens and the 2-CTA kernel at 512 tokens (Section 2.5). All four were measured in one session, separate from the baseline comparisons above, so absolute values differ somewhat from Figure 6. The FLOPs at each sequence length are the same for every block size, so a higher curve is a faster call.
 
 ![TFLOPS of our kernels by block size](/assets/images/vsa-blackwell/fwd-blocks.svg)
 
@@ -146,6 +161,8 @@ The largest gains are at short sequences, where fixed per-launch and per-tile ov
 - **64 → 256 tokens:** +44% at 4K and +32% at 64K. From 256 tokens on, both M-tiles of a CTA belong to one query block and share one K/V stream (Section 2.4); at 64 and 128 tokens each M-tile loads its own K/V.
 - **128 tokens** sits in between: the same tiling as 256, but with separate K/V per M-tile.
 - **512 tokens (2-CTA)** is within 1.2% of 256 tokens up to 64K, and 7% faster at 128K, where it also drops the least from its 64K value (4%, against 6–12% for the others).
+
+In short: every block size does the same work, so the speedup from larger blocks comes from how the kernel feeds the tensor cores (shared K/V streams, fewer and longer gathers), not from skipping FLOPs.
 
 ## 4. What's next
 
