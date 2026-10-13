@@ -23,7 +23,20 @@ COLORS = {
     "FastVideo Triton": "#eb6834",
     "FlashInfer": "#1baf7a",
     "FA4": "#eda100",
+    "64-token": "#6ea5e9",
+    "128-token": "#3d86dc",
+    "256-token": "#2161b8",
+    "512-token (2-CTA)": "#12396e",
 }
+
+BLOCKS = [
+    ("Our kernels by block size", {
+        "64-token": [641, 924, 1106, 1199, 1236, 1091],
+        "128-token": [837, 1158, 1212, 1468, 1431, 1341],
+        "256-token": [921, 1250, 1309, 1586, 1635, 1445],
+        "512-token (2-CTA)": [910, 1261, 1306, 1584, 1616, 1545],
+    }),
+]
 
 FWD_S = ["4K", "8K", "16K", "32K", "64K", "128K"]
 FWD = [
@@ -63,8 +76,8 @@ def spread(ys, min_gap):
     return out
 
 
-def small_multiples(path, panels, xlabels, ymax, ystep, series_order, title_note):
-    panel_w, panel_h = 300 + 14 * max(0, len(xlabels) - 6), 250
+def small_multiples(path, panels, xlabels, ymax, ystep, series_order, title_note, panel_w=None):
+    panel_w, panel_h = panel_w or 300 + 14 * max(0, len(xlabels) - 6), 250
     gap, left, top = 34, 58, 64
     label_w = 74
     plot_w = panel_w - label_w
@@ -120,7 +133,7 @@ def small_multiples(path, panels, xlabels, ymax, ystep, series_order, title_note
             ends.append((name, ymap(vals[-1]), vals[-1]))
         label_y = spread([e[1] for e in ends], 26)
         for (name, ey, ev), ly in zip(ends, label_y):
-            short = {"FastVideo Triton": "Triton"}.get(name, name)
+            short = {"FastVideo Triton": "Triton", "512-token (2-CTA)": "512-token"}.get(name, name)
             out.append(text(xs[-1] + 10, ly - 1, short, 11.5, INK, weight=600))
             out.append(text(xs[-1] + 10, ly + 12, f"{ev:,.0f}", 11, INK_2))
 
@@ -431,6 +444,9 @@ if __name__ == "__main__":
     small_multiples(os.path.join(OUT, "fwd-perf.svg"), FWD, FWD_S, 1600, 400,
                     ["This work", "FastVideo Triton", "FlashInfer", "FA4"],
                     "GB200 · H=8, D=128, 25% density")
+    small_multiples(os.path.join(OUT, "fwd-blocks.svg"), BLOCKS, FWD_S, 1800, 300,
+                    ["64-token", "128-token", "256-token", "512-token (2-CTA)"],
+                    "GB200 · H=8, D=128, 25% density", panel_w=820)
     vsa_diagram(os.path.join(OUT, "vsa-fine-stage.svg"))
     blk128_diagram(os.path.join(OUT, "fwd-blk128.svg"))
     fwd_diagram(os.path.join(OUT, "fwd-dualpack.svg"))
