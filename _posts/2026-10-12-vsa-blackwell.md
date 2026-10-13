@@ -134,7 +134,7 @@ Reading Figure 6 panel by panel:
 
 ### Block size
 
-Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 128 and 256 tokens and the 2-CTA kernel at 512 tokens. All four were measured in one session, separate from the baseline comparisons above, so absolute values differ somewhat from Figure 6. The FLOPs at each sequence length are the same for every block size, so a higher curve is a faster call.
+Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 128 and 256 tokens and the 2-CTA kernel at 512 tokens. The FLOPs at each sequence length are the same for every block size, so a higher curve is a faster call.
 
 ![TFLOPS of our kernels by block size](/assets/images/vsa-blackwell/fwd-blocks.svg)
 
