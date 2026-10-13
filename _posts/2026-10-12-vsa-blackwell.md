@@ -91,7 +91,7 @@ Every kernel runs two 128-lane M-tiles per CTA and ping-pongs between them: whil
 
 KV blocks per step count one M-tile. Small blocks lose reuse because the two M-tiles hold different query blocks with different lists. From 256 tokens on, both tiles belong to one block and reuse matches dense attention, and the 512-token 2-CTA kernel doubles it.
 
-## 3. Performance improvement
+## 3. Results
 
 ### 3.1 Setup
 
