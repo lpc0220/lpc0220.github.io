@@ -166,8 +166,7 @@ In short: every block size does the same work, so the speedup from larger blocks
 
 ## What's next
 
-- **Low-precision VSA.** The kernels are compute-bound, and Blackwell's tensor cores run FP8 at twice and FP4 at four times the BF16 rate. We are working on FP8 and NVFP4 versions of the VSA kernels, starting with the two GEMMs per step.
-- **VSA on Vera Rubin.** The same design carries over to Vera Rubin (sm_107a). Its larger shared memory allows deeper K/V rings, and we will retune the block-size variants for it.
+Next, we are working on low-precision (FP8 and NVFP4) versions of these kernels and on bringing them to Vera Rubin.
 
 ## Acknowledgements
 
