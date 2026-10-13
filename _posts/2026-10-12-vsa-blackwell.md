@@ -132,8 +132,6 @@ Reading Figure 6 panel by panel:
 - **128-token blocks.** Ours goes from 833 to 1,415 TFLOPS (at 64K). FlashInfer closes most of the gap from 16K on and reaches 1,252 at 64K.
 - **256-token blocks.** Ours peaks at 1,548 TFLOPS at 32K. FA4 starts at 210 at 4K and reaches 1,434 at 64K.
 
-All three of our kernels drop 6–9% from 64K to 128K tokens.
-
 Speedup here is our TFLOPS divided by the baseline's at the same block size and sequence length; the FLOPs are equal, so it is also the ratio of run times. The largest gains are at short sequences: 3.3–8.8× at 4K tokens. There, a call is 20–32 µs for our kernels but 82–278 µs for the baselines, and any cost that does not grow with the sequence weighs heavily. As sequences grow, the gap narrows, to 1.04–1.14× over FlashInfer and FA4 at 128K. Against Triton the gap stays large: 1.9× at 128K, where a call takes 17.5 ms with our kernel and 33.7 ms with Triton.
 
 ### Block size
