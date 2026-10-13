@@ -111,14 +111,12 @@ The metric counts the two GEMMs of attention (Q·Kᵀ and P·V, 2 FLOPs per mult
 
 | Sequence length | 4K | 8K | 16K | 32K | 64K | 128K |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| KV blocks / top-k, 64-token blocks | 64 / 16 | 128 / 32 | 256 / 64 | 512 / 128 | 1,024 / 256 | 2,048 / 512 |
-| KV blocks / top-k, 128-token blocks | 32 / 8 | 64 / 16 | 128 / 32 | 256 / 64 | 512 / 128 | 1,024 / 256 |
-| KV blocks / top-k, 256-token blocks | 16 / 4 | 32 / 8 | 64 / 16 | 128 / 32 | 256 / 64 | 512 / 128 |
-| KV blocks / top-k, 512-token blocks | 8 / 2 | 16 / 4 | 32 / 8 | 64 / 16 | 128 / 32 | 256 / 64 |
+| KV blocks per head (64 / 128 / 256 / 512 tokens) | 64 / 32 / 16 / 8 | 128 / 64 / 32 / 16 | 256 / 128 / 64 / 32 | 512 / 256 / 128 / 64 | 1,024 / 512 / 256 / 128 | 2,048 / 1,024 / 512 / 256 |
+| Selected KV blocks per query block (top-k) | 16 / 8 / 4 / 2 | 32 / 16 / 8 / 4 | 64 / 32 / 16 / 8 | 128 / 64 / 32 / 16 | 256 / 128 / 64 / 32 | 512 / 256 / 128 / 64 |
 | Selected keys per query row | 1,024 | 2,048 | 4,096 | 8,192 | 16,384 | 32,768 |
 | Work per call | 17 GFLOP | 69 GFLOP | 275 GFLOP | 1.1 TFLOP | 4.4 TFLOP | 17.6 TFLOP |
 
-KV blocks are counted per head; top-k is the number of KV blocks each query block selects. At 4K tokens a call takes our kernels 19–32 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 11–18 ms, and such fixed costs are negligible.
+At 4K tokens a call takes our kernels 19–32 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 11–18 ms, and such fixed costs are negligible.
 
 ### Comparison with public kernels
 
