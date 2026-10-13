@@ -134,16 +134,7 @@ Reading Figure 6 panel by panel:
 
 All three of our kernels drop 6–9% from 64K to 128K tokens.
 
-The table gives the speedup of our kernel over each baseline: our TFLOPS divided by the baseline's at the same block size and sequence length. The FLOPs are equal, so this is also the ratio of run times.
-
-| Block | Baseline | 4K | 8K | 16K | 32K | 64K | 128K |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 64 | Triton | 3.34× | 2.74× | 2.34× | 2.25× | 2.14× | 1.92× |
-| 64 | FlashInfer | 8.78× | 4.65× | 2.67× | 1.76× | 1.32× | 1.14× |
-| 128 | FlashInfer | 4.21× | 2.09× | 1.26× | 1.18× | 1.13× | 1.09× |
-| 256 | FA4 | 4.13× | 2.17× | 1.33× | 1.16× | 1.07× | 1.04× |
-
-The largest gains are at short sequences: 3.3–8.8× at 4K tokens. There, a call is 20–32 µs for our kernels but 82–278 µs for the baselines, and any cost that does not grow with the sequence weighs heavily. As sequences grow, the gap narrows, to 1.04–1.14× over FlashInfer and FA4 at 128K. Against Triton the gap stays large: 1.9× at 128K, where a call takes 17.5 ms with our kernel and 33.7 ms with Triton.
+Speedup here is our TFLOPS divided by the baseline's at the same block size and sequence length; the FLOPs are equal, so it is also the ratio of run times. The largest gains are at short sequences: 3.3–8.8× at 4K tokens. There, a call is 20–32 µs for our kernels but 82–278 µs for the baselines, and any cost that does not grow with the sequence weighs heavily. As sequences grow, the gap narrows, to 1.04–1.14× over FlashInfer and FA4 at 128K. Against Triton the gap stays large: 1.9× at 128K, where a call takes 17.5 ms with our kernel and 33.7 ms with Triton.
 
 ### Block size
 
@@ -152,13 +143,6 @@ Figure 7 compares our own kernels across block sizes: the 1-CTA kernels at 64, 1
 ![TFLOPS of our kernels by block size](/assets/images/vsa-blackwell/fwd-blocks.svg)
 
 *Figure 7. Our forward kernels by block size on GB200, TFLOPS against sequence length (higher is better).*
-
-| Block | 4K | 8K | 16K | 32K | 64K | 128K |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 64 | 641 | 924 | 1,106 | 1,199 | 1,236 | 1,091 |
-| 128 | 837 | 1,158 | 1,212 | 1,468 | 1,431 | 1,341 |
-| 256 | 921 | 1,250 | 1,309 | 1,586 | 1,635 | 1,445 |
-| 512 (2-CTA) | 910 | 1,261 | 1,306 | 1,584 | 1,616 | 1,545 |
 
 - **64 → 256 tokens:** +44% at 4K and +32% at 64K. From 256 tokens on, both M-tiles of a CTA belong to one query block and share one K/V stream (see the 256-token design above); at 64 and 128 tokens each M-tile loads its own K/V.
 - **128 tokens** sits in between: the same tiling as 256, but with separate K/V per M-tile.
