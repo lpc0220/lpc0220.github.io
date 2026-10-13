@@ -116,11 +116,11 @@ The metric counts the two GEMMs of attention (Q·Kᵀ and P·V, 2 FLOPs per mult
 | Selected keys per query row | 1,024 | 2,048 | 4,096 | 8,192 | 16,384 | 32,768 |
 | Work per call | 17 GFLOP | 69 GFLOP | 275 GFLOP | 1.1 TFLOP | 4.4 TFLOP | 17.6 TFLOP |
 
-At 4K tokens a call takes our kernels 19–32 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 11–18 ms, and such fixed costs are negligible.
+At 4K tokens a call takes our kernels 19–27 µs, so per-launch and per-tile costs that do not grow with the sequence matter. At 128K a call takes 11–16 ms, and such fixed costs are negligible.
 
 ### Comparison with public kernels
 
-Each of our kernels is compared with the strongest public kernel at the same block size: our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (our VSA-256 path) at 256, which is FA4's minimum block size. Each comparison ran in one session on identical inputs.
+Each of our kernels is compared with the strongest public kernel at the same block size: our Triton kernel and FlashInfer at 64 tokens, FlashInfer at 128, and FA4's block-sparse kernel (our VSA-256 path) at 256, which is FA4's minimum block size. All runs use identical inputs.
 
 ![TFLOPS vs sequence length](/assets/images/vsa-blackwell/fwd-perf.svg)
 
@@ -128,9 +128,9 @@ Each of our kernels is compared with the strongest public kernel at the same blo
 
 Reading Figure 6 panel by panel:
 
-- **64-token blocks.** Our kernel rises from 543 TFLOPS at 4K to 1,102 at 64K. Triton levels off at 485–522 from 32K on. FlashInfer starts lowest (62 at 4K) and climbs to 882 at 128K, but stays below ours at every length.
-- **128-token blocks.** Ours goes from 833 to 1,415 TFLOPS (at 64K). FlashInfer closes most of the gap from 16K on and reaches 1,252 at 64K.
-- **256-token blocks.** Ours peaks at 1,548 TFLOPS at 32K. FA4 starts at 210 at 4K and reaches 1,434 at 64K.
+- **64-token blocks.** Our kernel rises from 641 TFLOPS at 4K to 1,236 at 64K. Triton levels off at 485–522 from 32K on. FlashInfer starts lowest (62 at 4K) and climbs to 882 at 128K, but stays below ours at every length.
+- **128-token blocks.** Ours goes from 837 to 1,468 TFLOPS (at 32K). FlashInfer closes most of the gap from 16K on and reaches 1,252 at 64K.
+- **256-token blocks.** Ours peaks at 1,635 TFLOPS at 64K. FA4 starts at 210 at 4K and reaches 1,434 at 64K.
 
 ### Block size
 

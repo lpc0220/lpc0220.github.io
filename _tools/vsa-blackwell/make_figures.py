@@ -43,15 +43,15 @@ FWD = [
     ("64-token blocks", {
         "FastVideo Triton": [162.6, 302.6, 434.5, 484.7, 515.7, 521.9],
         "FlashInfer": [61.8, 178.2, 381.3, 618.9, 831.9, 881.6],
-        "This work": [542.8, 829.2, 1016.7, 1091.3, 1102.0, 1003.0],
+        "This work": [641, 924, 1106, 1199, 1236, 1091],
     }),
     ("128-token blocks", {
         "FlashInfer": [197.7, 514.3, 943.9, 1191.5, 1252.3, 1190.2],
-        "This work": [832.9, 1072.7, 1184.9, 1409.9, 1414.9, 1291.9],
+        "This work": [837, 1158, 1212, 1468, 1431, 1341],
     }),
     ("256-token blocks", {
         "FA4": [210, 561, 972, 1333, 1434, 1387],
-        "This work": [867, 1215, 1291, 1548, 1528, 1438],
+        "This work": [921, 1250, 1309, 1586, 1635, 1445],
     }),
 ]
 
@@ -76,7 +76,7 @@ def spread(ys, min_gap):
     return out
 
 
-def small_multiples(path, panels, xlabels, ymax, ystep, series_order, title_note, panel_w=None):
+def small_multiples(path, panels, xlabels, ymax, ystep, series_order, title_note, panel_w=None, ymin=0):
     panel_w, panel_h = panel_w or 300 + 14 * max(0, len(xlabels) - 6), 250
     gap, left, top = 34, 58, 64
     label_w = 74
@@ -104,13 +104,13 @@ def small_multiples(path, panels, xlabels, ymax, ystep, series_order, title_note
         xs = [x0 + 8 + i * (plot_w - 16) / (n - 1) for i in range(n)]
 
         def ymap(v):
-            return y0 + panel_h - v / ymax * panel_h
+            return y0 + panel_h - (v - ymin) / (ymax - ymin) * panel_h
 
-        v = 0
+        v = ymin
         while v <= ymax + 1e-9:
             yy = ymap(v)
             out.append(f'<line x1="{x0}" y1="{yy:.1f}" x2="{x0 + plot_w}" y2="{yy:.1f}" '
-                       f'stroke="{GRID if v else PANEL_BORDER}" stroke-width="1"/>')
+                       f'stroke="{GRID if v != ymin else PANEL_BORDER}" stroke-width="1"/>')
             if p == 0:
                 out.append(text(x0 - 8, yy + 4, f"{v:,}", 11, INK_3, "end"))
             v += ystep
@@ -444,9 +444,9 @@ if __name__ == "__main__":
     small_multiples(os.path.join(OUT, "fwd-perf.svg"), FWD, FWD_S, 1600, 400,
                     ["This work", "FastVideo Triton", "FlashInfer", "FA4"],
                     "GB200 · H=8, D=128, 25% density")
-    small_multiples(os.path.join(OUT, "fwd-blocks.svg"), BLOCKS, FWD_S, 1800, 300,
+    small_multiples(os.path.join(OUT, "fwd-blocks.svg"), BLOCKS, FWD_S, 1800, 200,
                     ["64-token", "128-token", "256-token", "512-token (2-CTA)"],
-                    "GB200 · H=8, D=128, 25% density", panel_w=820)
+                    "GB200 · H=8, D=128, 25% density", panel_w=820, ymin=600)
     vsa_diagram(os.path.join(OUT, "vsa-fine-stage.svg"))
     blk128_diagram(os.path.join(OUT, "fwd-blk128.svg"))
     fwd_diagram(os.path.join(OUT, "fwd-dualpack.svg"))
